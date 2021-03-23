@@ -1,45 +1,24 @@
+<script>
+  const client_id = "2774084983.1867696398775";
+  const scopes = [
+    'app_mentions:read',
+    'channels:history',
+    'channels:read',
+    'chat:write'
+  ];
+  const state = 'randomString';
+</script>
 
 <main>
-	<h1>Hello world!</h1>
+	<h1>Hello Becky Fans!</h1>
 
-	<p>Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte apps.</p>
+  <a href="{`https://slack.com/oauth/v2/authorize?scope=${scopes.join(',')}&client_id=${client_id}&state=${state}`}">
+    <img
+      alt="Add to Slack"
+      height="40"
+      width="139"
+      src="https://platform.slack-edge.com/img/add_to_slack.png"
+      srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
+    />
+  </a>
 </main>
-
-<style>
-	:root {
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
-			'Open Sans', 'Helvetica Neue', sans-serif;
-	}
-
-	main {
-		text-align: center;
-		padding: 1em;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4rem;
-		font-weight: 100;
-		line-height: 1.1;
-		margin: 4rem auto;
-		max-width: 14rem;
-	}
-
-	p {
-		max-width: 14rem;
-		margin: 2rem auto;
-		line-height: 1.35;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			max-width: none;
-		}
-
-		p {
-			max-width: none;
-		}
-	}
-</style>
