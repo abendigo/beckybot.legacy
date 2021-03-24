@@ -1,7 +1,9 @@
 import { postMessage } from './_api';
 import { teams } from './_teams';
+import { videos } from './_videos';
 
 let timestamps = {};
+const happyFriday = new RegExp(/^Happy F(ri|ir)day*/, 'i');
 
 export async function post(request, context) {
   // const { SLACK_API_TOKEN: token } = process.env;
@@ -27,22 +29,24 @@ export async function post(request, context) {
 
       }
 
-      if (!event.subtype && event.text.localeCompare('happy friday', 'en', { sensitivity: 'base' }) === 0) {
+      if (!event.subtype && happyFriday.test(event.text)) {
         const team = event.team;
         const token = teams[team].access_token;
 
-        const text = 'The Original! The one that started it all! https://www.youtube.com/watch?v=kfVsfOSbJY0';
-        const next = 'The Remix! https://www.youtube.com/watch?v=iCFOcqsnc9Y';
-
         if (timestamps[team] === undefined) {
-          timestamps[team] = 0;
+          timestamps[team] = { time: 0, next: 0 };
         }
 
         const now = Date.now();
+        const dayOfWeek = new Date().getDay();
+        console.log({dayOfWeek});
+
         const delay = 15 * 60 * 1000;
-        if (timestamps[team] + delay < now) {
-          timestamps[team] = now;
-          await postMessage({ token, channel: event.channel, text });
+        if (dayOfWeek === 5 && timestamps[team].time + delay < now) {
+          timestamps[team].time = now;
+          await postMessage({ token, channel: event.channel, text: videos[timestamps[team].next] });
+
+          timestamps[team].next = (timestamps[team].next + 1) % videos.length;
         } else {
           console.log('==== waiting a while ===');
         }
