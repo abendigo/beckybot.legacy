@@ -3,7 +3,7 @@ import { getAccessToken } from './_api';
 const { SLACK_CLIENT_SECRET: client_secret } = process.env;
 const client_id = "2774084983.1867696398775";
 
-export async function get(request, context) {
+export async function get(request) {
   console.log('oauth.get', request);
   console.log('oauth.get', request.query);
   const code = request.query.get('code');

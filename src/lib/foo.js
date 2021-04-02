@@ -1,28 +1,13 @@
-// import { publish } from '$lib/pubsub';
-import { postMessage } from './_api';
-import { teams } from './_teams';
-import { videos } from './_videos';
 
-let timestamps = {};
-const happyFriday = new RegExp(/^Happy F(ri|ir)day*/, 'i');
-const happyHumpday = new RegExp(/^Happy Humpday*/, 'i');
 
-export async function post(request) {
-  // console.log('-----', request, '=====')
-  const { body, context } = request;
-  // const { type, challenge } = request.body;
-  // console.log('====', {body}, '====');
+export function processMessage(channel, message) {
+  console.log('processMessage', { channel, message });
 
-  // console.log('POST', request);
-  // console.log({body, context})
-  // console.log('--------');
+  // const { type, challenge } = JSON.parse(message);
 
-  // context.queue.push(body);
-  // pubSub.publish('EVENTS', body);
-  context.publisher.publish('EVENTS', JSON.stringify(body));
 
   // if (type === 'url_verification') {
-  //     return { body: challenge };
+  //   return { body: challenge };
   // }
 
   // if (type === 'event_callback') {
@@ -76,6 +61,4 @@ export async function post(request) {
   //     }
   //   }
   // }
-
-  return { body: {} };
 }

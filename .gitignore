@@ -4,3 +4,5 @@ node_modules
 /build
 /functions
 src/routes/slack/_teams.js
+src/db/seeds/teams.js
+.env
