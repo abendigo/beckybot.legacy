@@ -1,5 +1,5 @@
 {
-	"name": "beckybot",
+	"name": "@beckybot/backend",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "nodemon src/backend.js"

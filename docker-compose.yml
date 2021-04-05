@@ -6,6 +6,7 @@ services:
     image: node:14
     command: npm run dev
     environment:
+      - MYSQL_PASSWORD
       - SLACK_CLIENT_SECRET
     ports:
       - 3000:3000
@@ -22,6 +23,8 @@ services:
     image: node:14
     command:
       npm run dev
+    environment:
+      - MYSQL_PASSWORD
     networks:
       - mysql_backend
       - backend
