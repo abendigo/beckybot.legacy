@@ -16,7 +16,18 @@ services:
       - backend
     working_dir: /usr/src/app
     volumes:
-      - ./:/usr/src/app
+      - ./frontend:/usr/src/app
+
+  backend:
+    image: node:14
+    command:
+      npm run dev
+    networks:
+      - mysql_backend
+      - backend
+    working_dir: /usr/src/app
+    volumes:
+      - ./backend:/usr/src/app
 
   redis:
     image: redis

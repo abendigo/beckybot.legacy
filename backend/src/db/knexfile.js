@@ -1,4 +1,4 @@
-const config = {
+export const config = {
   client: 'mysql',
   connection: {
     host: 'db',
