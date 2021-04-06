@@ -1,29 +1,9 @@
-import knex from 'knex';
-import { postMessage } from './_api.js';
-
-import { config } from '../db/knexfile.js';
+import { postMessage } from '@beckybot/lib/_api.js';
+import { db } from '@beckybot/lib/db.js';
 
 let timestamps = {};
-const happyFriday = new RegExp(/^Happy F(ri|ir)day*/, 'i');
-const happyHumpday = new RegExp(/^Happy Humpday*/, 'i');
 
 let teams;
-
-export async function setup() {
-  if (teams === undefined) {
-    try {
-      console.log('selecting teams')
-      const db = knex(config);
-      teams = await (await db.from('teams')).reduce((map, {id, config}) => {
-        map[id] = JSON.parse(config);
-        return map;
-      }, {});
-    } catch (error) {
-      console.log('error', error)
-    }
-  }
-
-}
 
 const triggers = [
   // {regex: { match: '^Happy F(ri|ir)day*', flags: 'i' }, daysOfWeek: [4], timeout: 15 * 60, responses: []},
@@ -34,7 +14,7 @@ const triggers = [
     'You too! Here\'s a cover by Katy Perry. https://www.youtube.com/watch?v=sM51ANnSgsU',
     'For all the metal fans. https://www.youtube.com/watch?v=9mHDAYutrC0',
     'It\'s Death Metal Friday! https://www.youtube.com/watch?v=pi00ykRg_5c',
-    'Something a little differnt this time. Annoying Orange! https://www.youtube.com/watch?v=akT0wxv9ON8',
+    'Something a little different this time. Annoying Orange! https://www.youtube.com/watch?v=akT0wxv9ON8',
     'Did you know Rebecca Black has some other songs too? Here\'s Girlfriend: https://www.youtube.com/watch?v=pEy5x-vTH4g'
   ]},
   {trigger: { match: '^Happy Humpday*', flags: 'i' }, daysOfWeek: [0, 3], timeout: 15 * 60, responses: [
@@ -52,7 +32,7 @@ export async function processMessage(message) {
   if (teams === undefined) {
     try {
       console.log('selecting teams')
-      const db = knex(config);
+      // const db = knex(config);
       teams = await (await db.from('teams')).reduce((map, {id, config}) => {
         map[id] = JSON.parse(config);
         return map;

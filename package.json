@@ -1,0 +1,9 @@
+{
+  "name": "@beckybot/monorepo",
+  "workspaces": [
+    "./lib"
+  ],
+  "engines": {
+    "npm": ">=7.0.0"
+  }
+}

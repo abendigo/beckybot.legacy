@@ -1,4 +1,4 @@
-import { publish } from '$lib/pubsub';
+import { publish } from '@beckybot/lib/pubsub';
 
 export async function post(request) {
   const { body, body: { type, challenge } } = request;

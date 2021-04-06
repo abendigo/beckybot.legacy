@@ -3,5 +3,5 @@ node_modules
 /frontend/.svelte
 /frontend/build
 /frontend/functions
-src/db/seeds/teams.js
+/db/seeds/teams.js
 .env

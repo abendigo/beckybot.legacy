@@ -1,9 +1,7 @@
-import { subscribe } from './lib/pubsub.js';
+import { subscribe } from '@beckybot/lib/pubsub.js';
 import { processMessage } from './lib/consumer.js';
 
-console.log('backend.js');
-
-
+// Nodemon sends SIGUSR2 before it restarts.
 process.once('SIGUSR2', function () {
   console.log('shutting down');
   unsubscribe();
@@ -12,6 +10,10 @@ process.once('SIGUSR2', function () {
 });
 
 let unsubscribe = subscribe('EVENTS', function(channel, message) {
-  console.log('subscribe', channel)
-  processMessage(message);
+  try {
+    console.log('subscribe', channel)
+    processMessage(message);
+  } catch (error) {
+    console.log('XXXXSX ERROR XXXX', error)
+  }
 });
