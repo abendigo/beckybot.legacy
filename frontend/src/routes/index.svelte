@@ -1,3 +1,19 @@
+<script context="module">
+  export async function load({ page, fetch, session, context }) {
+    console.log('load', { page, fetch, session, context })
+
+  //   return { status: 200 };
+  // //   return {
+  //     status,
+  //     error,
+  //     redirect,
+  //     maxage,
+  //     props,
+  //     context
+  //   };
+  };
+</script>
+
 <script>
   const client_id = "2774084983.1867696398775";
   const scopes = [

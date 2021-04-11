@@ -16,6 +16,7 @@ WORKDIR /src
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # COPY package*.json ./
 
+
 COPY . .
 
 # npm ci works similarly to npm i, but skips the expensive dependency resolution step,
@@ -29,7 +30,7 @@ RUN npm ci
 # RUN npm run test
 
 # Bundle app source
-RUN npm run build --workspace=frontend
+RUN npm run build --workspace=backend
 
 # get rid of any development dependencies as they are no longer needed past this point.
 RUN npm prune --production
@@ -38,13 +39,11 @@ RUN npm prune --production
 
 FROM node:14.16.0-alpine
 
-ENV PORT=3000
-EXPOSE $PORT
 WORKDIR /usr/src/service
 
-COPY --from=build /src/frontend/package.json package.json
+COPY --from=build /src/backend/package.json package.json
 COPY --from=build /src/node_modules node_modules
-COPY --from=build /src/frontend/build build
+COPY --from=build /src/backend/bundle.js bundle.js
 
 USER node
-CMD ["node", "build"]
+CMD ["node", "bundle.js"]

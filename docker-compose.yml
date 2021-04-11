@@ -4,7 +4,7 @@
 services:
   beckybot:
     image: node:14
-    command: npm run dev
+    command: npm run dev --workspace=frontend
     environment:
       - MYSQL_PASSWORD
       - SLACK_CLIENT_SECRET
@@ -15,20 +15,20 @@ services:
       - traefik
       - mysql_backend
       - backend
-    working_dir: /usr/src/app/frontend
+    working_dir: /usr/src/app
     volumes:
       - ./:/usr/src/app
 
   backend:
     image: node:14
     command:
-      npm run dev
+      npm run dev --workspace=backend
     environment:
       - MYSQL_PASSWORD
     networks:
       - mysql_backend
       - backend
-    working_dir: /usr/src/app/backend
+    working_dir: /usr/src/app
     volumes:
       - ./:/usr/src/app
 

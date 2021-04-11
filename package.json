@@ -1,9 +1,15 @@
 {
   "name": "@beckybot/monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
   "workspaces": [
-    "./lib"
+    "./lib",
+    "./backend",
+    "./frontend"
   ],
   "engines": {
-    "npm": ">=7.0.0"
+    "npm": ">=7.0.0",
+    "yarn": "please-use-npm"
   }
 }

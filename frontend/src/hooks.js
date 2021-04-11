@@ -45,7 +45,7 @@
   //     console.log('error', error)
   //   }
   // }
-/*  
+/*
   if (publisher === undefined) {
     console.log('publisher created')
     publisher = redis.createClient({ url: 'redis://redis:6379'});
@@ -75,3 +75,20 @@
 //   console.log('handle')
 //   return render(request);
 // }
+
+
+export function getContext({ method, host, headers, path, query, body }) {
+  console.log('getContext', { method, host, headers, path, query, body });
+  return {
+    foo: 'bar'
+  };
+};
+
+export function getSession(context) {
+  console.log('getSession', { context })
+  return {
+    user: {
+      name: 'Joe'
+    }
+  };
+}
