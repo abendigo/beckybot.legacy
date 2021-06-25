@@ -16,10 +16,10 @@ const triggers = [
     'It\'s Death Metal Friday! https://www.youtube.com/watch?v=pi00ykRg_5c',
     'Something a little different this time. Annoying Orange! https://www.youtube.com/watch?v=akT0wxv9ON8',
     'Did you know Rebecca Black has some other songs too? Here\'s Girlfriend: https://www.youtube.com/watch?v=pEy5x-vTH4g'
-  ]},
+  ], state: { next: 0 }},
   {trigger: { match: '^Happy Humpday*', flags: 'i' }, daysOfWeek: [0, 3], timeout: 15 * 60, responses: [
     'https://i.pinimg.com/originals/20/03/15/2003156de252c06c15b90103f2c3d45b.gif'
-  ]}
+  ], state: { next: 0 }}
 ];
 
 
@@ -98,7 +98,8 @@ export async function processMessage(message) {
             }
 
             const token = teams[team].access_token;
-            const message = next.responses[0];
+            const message = next.responses[next.state.next];
+            next.state.next = (next.state.next + 1) % next.responses.length;
 
             postMessage({ token, channel, text: message });
 
