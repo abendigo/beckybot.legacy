@@ -13,4 +13,4 @@ jobs:
         node-version: '16'
     - run: node --version
     - run: npm install
-    - run: npm test --workspace=backend
+    - run: npm test --workspace=backend -- --publish
