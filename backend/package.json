@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "nodemon src/backend.js",
     "build": "rollup -c",
-    "test": "cucumber-js --esm --publish-quiet"
+    "test": "cucumber-js --esm",
+    "ci": "cucumber-js --esm --publish"
   },
   "devDependencies": {
     "@cucumber/cucumber": "7.2.0",

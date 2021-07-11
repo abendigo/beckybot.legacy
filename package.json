@@ -4,9 +4,8 @@
   "private": true,
   "license": "UNLICENSED",
   "workspaces": [
-    "./lib",
-    "./backend",
-    "./frontend"
+    "lib",
+    "backend"
   ],
   "engines": {
     "npm": ">=7.0.0",
