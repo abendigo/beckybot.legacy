@@ -14,3 +14,5 @@ jobs:
     - run: node --version
     - run: npm install
     - run: npm test --workspace=backend -- --publish
+      with:
+        super_secret: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
