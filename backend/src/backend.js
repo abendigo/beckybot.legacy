@@ -1,5 +1,16 @@
+import { postMessage } from '@beckybot/lib/_api.js';
+import { db } from '@beckybot/lib/db.js';
 import { subscribe } from '@beckybot/lib/pubsub.js';
-import { processMessage } from './lib/consumer.js';
+
+import { createMessageConsumer } from './lib/consumer.js';
+// import { createTeamManager } from './lib/teams.js'
+// import { createTriggerManager } from './lib/triggers.js'
+
+const messageProducer = { postMessage };
+// const teamManager = createTeamManager(db);
+// const triggerManager = createTriggerManager(db);
+
+const { processMessage } = createMessageConsumer({ db, messageProducer });
 
 // Nodemon sends SIGUSR2 before it restarts.
 process.once('SIGUSR2', function () {
@@ -9,11 +20,11 @@ process.once('SIGUSR2', function () {
   process.kill(process.pid, 'SIGUSR2');
 });
 
-let unsubscribe = subscribe('EVENTS', function(channel, message) {
+const unsubscribe = subscribe('EVENTS', function(channel, message) {
   try {
     console.log('subscribe', channel)
-    processMessage(message);
+    processMessage(message, postMessage);
   } catch (error) {
-    console.log('XXXXSX ERROR XXXX', error)
+    console.log('XXXX ERROR XXXX', error)
   }
 });
