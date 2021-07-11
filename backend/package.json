@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "nodemon src/backend.js",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "cucumber-js --esm --publish-quiet"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "7.2.0",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
