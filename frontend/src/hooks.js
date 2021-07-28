@@ -70,25 +70,35 @@
 //   console.log('getSession', { context });
 //   return {};
 // }
+let user;
 
-// export async function handle(request, render) {
-//   console.log('handle')
-//   return render(request);
-// }
+export async function handle({request, resolve}) {
+  // console.log('handle')
+  const response = await resolve(request);
+  // console.log({response, locals: request.locals});
+
+  if (request.locals.user) {
+    user = request.locals.user;
+  }
+
+  return response;
+}
 
 
-export function getContext({ method, host, headers, path, query, body }) {
-  console.log('getContext', { method, host, headers, path, query, body });
-  return {
-    foo: 'bar'
-  };
-};
+// export function getContext({ method, host, headers, path, query, body }) {
+//   console.log('getContext', { method, host, headers, path, query, body });
+//   return {
+//     foo: 'bar'
+//   };
+// };
 
-export function getSession(context) {
-  console.log('getSession', { context })
+
+export function getSession(request) {
+  // console.log('getSession', { request })
   return {
     user: {
-      name: 'Joe'
+      // name: 'Joe',
+      id: user
     }
   };
 }

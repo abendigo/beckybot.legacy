@@ -5,10 +5,11 @@
   "license": "UNLICENSED",
   "workspaces": [
     "lib",
-    "backend"
+    "backend",
+    "frontend"
   ],
   "engines": {
-    "npm": ">=7.0.0",
+    "npm": ">=7.3.0",
     "yarn": "please-use-npm"
   }
 }

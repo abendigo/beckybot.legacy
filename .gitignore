@@ -5,3 +5,4 @@ node_modules
 /frontend/functions
 /db/seeds/teams.js
 .env
+.svelte-kit
