@@ -6,3 +6,4 @@ node_modules
 /db/seeds/teams.js
 .env
 .svelte-kit
+build-storybook.log

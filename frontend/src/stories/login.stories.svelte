@@ -3,8 +3,30 @@
   import LoginPage from "../routes/login.svelte";
 </script>
 
-<Meta title="Pages/Login Page" component={LoginPage} />
+<Meta
+  title="Login Page"
+  component={LoginPage}
+  argTypes={{
+    onLogin: { action: "onLogin" },
+    onLogout: { action: "onLogout" },
+    onCreateAccount: { action: "onCreateAccount" },
+  }}
+/>
 
-<Story name="Login Page">
-  <LoginPage />
-</Story>
+<Template let:args>
+  <LoginPage
+    {...args}
+    on:login={args.onLogin}
+    on:logout={args.onLogout}
+    on:createAccount={args.onCreateAccount}
+  />
+</Template>
+
+<Story
+  name="LoggedIn"
+  args={{
+    user: {},
+  }}
+/>
+
+<Story name="LoggedOut" args={{}} />

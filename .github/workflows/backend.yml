@@ -12,8 +12,8 @@ jobs:
       with:
         node-version: '16'
     - run: node --version
-    - run: npm install
+    - run: npm install --legacy-peer-deps
     - name: Test
       env:
         CUCUMBER_PUBLISH_TOKEN : ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-      run: npm test --workspace=backend -- --publish
+      run: npm test -w backend -- --publish

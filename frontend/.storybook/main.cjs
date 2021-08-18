@@ -12,9 +12,6 @@ module.exports = {
   ],
   "core": {
     "builder": "storybook-builder-vite"
-  // },
-  // "svelteOptions": {
-    // "preprocess": require("../svelte.config.js").preprocess
   },
   async viteFinal(config) {
     config.resolve.alias = {
