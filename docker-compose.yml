@@ -1,46 +1,121 @@
-
-
-
 services:
-  beckybot:
-    image: node:14
-    command: npm run dev --workspace=frontend
+  db-init:
+    image: ghcr.io/abendigo/beckybot/db:latest
+    command: node ./init.js
     environment:
-      - MYSQL_PASSWORD
-      - SLACK_CLIENT_SECRET
-    ports:
-      - 3000:3000
-      - 24678:24678
-    networks:
-      - traefik_default
-      - mysql_backend
-      - backend
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
-
-  backend:
-    image: node:14
-    command:
-      npm run dev --workspace=backend
-    environment:
-      - MYSQL_PASSWORD
+      MYSQL_ROOT_PASSWORD: example
     networks:
       - mysql_backend
-      - backend
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
 
-  redis:
-    image: redis
-    networks:
-      - backend
+  # beckybot:
+  #   image: node:14
+  #   command: npm run dev --workspace=frontend
+  #   environment:
+  #     - MYSQL_PASSWORD
+  #     - SLACK_CLIENT_SECRET
+  #   ports:
+  #     - 3000:3000
+  #     - 24678:24678
+  #   networks:
+  #     - traefik_default
+  #     - mysql_backend
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
 
+  # backend:
+  #   image: node:14
+  #   command:
+  #     npm run dev --workspace=backend
+  #   environment:
+  #     - MYSQL_PASSWORD
+  #   networks:
+  #     - mysql_backend
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
+
+  # redis:
+  #   image: redis
+  #   networks:
+  #     - backend
 
 networks:
-  traefik_default:
-    external: true
+  # traefik_default:
+  #   external: true
   mysql_backend:
     external: true
-  backend:
+  # backend:
+# services:
+#   db-init:
+#     image: mysql
+#     command: /initproject.sh
+#     environment:
+#       - MYSQL_ROOT_PASSWORD
+#     networks:
+#       - mysql_backend
+#     volumes:
+#       - ./db-init/initproject.sh:/initproject.sh
+
+#   db-migrations:
+#     image: node:16
+#     command: npx knex --knexfile ./knexfile.js migrate:latest
+#     environment:
+#       - MYSQL_PASSWORD
+#     working_dir: /usr/src/app/db
+#     networks:
+#       - mysql_backend
+#     volumes:
+#       - ./:/usr/src/app
+#     depends_on:
+#       db-init:
+#         condition: service_completed_successfully
+
+# beckybot:
+#   image: node:14
+#   command: npm run dev --workspace=frontend
+#   environment:
+#     - MYSQL_PASSWORD
+#     - SLACK_CLIENT_SECRET
+#   ports:
+#     - 3000:3000
+#     - 24678:24678
+#   networks:
+#     - traefik
+#     - mysql_backend
+#     - backend
+#   working_dir: /usr/src/app
+#   volumes:
+#     - ./:/usr/src/app
+#   depends_on:
+#     db-migrations:
+#       condition: service_completed_successfully
+
+# backend:
+#   image: node:14
+#   command: npm run dev --workspace=backend
+#   environment:
+#     - MYSQL_PASSWORD
+#   networks:
+#     - mysql_backend
+#     - backend
+#   working_dir: /usr/src/app
+#   volumes:
+#     - ./:/usr/src/app
+#   depends_on:
+#     db-migrations:
+#       condition: service_completed_successfully
+
+# redis:
+#   image: redis
+#   networks:
+#     - backend
+
+# networks:
+#   traefik:
+#     external: true
+#   mysql_backend:
+#     external: true
+#   backend:
