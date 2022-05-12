@@ -26,7 +26,8 @@ services:
       - backend
     depends_on:
       db-init:
-        condition: service_completed_successfully
+        # condition: service_completed_successfully
+        condition: service_started
       redis:
         condition: service_started
 
@@ -39,7 +40,8 @@ services:
       - backend
     depends_on:
       db-init:
-        condition: service_completed_successfully
+        # condition: service_completed_successfully
+        condition: service_started
       redis:
         condition: service_started
 
