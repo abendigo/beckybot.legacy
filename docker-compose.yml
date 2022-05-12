@@ -3,7 +3,7 @@ services:
     image: ghcr.io/abendigo/beckybot/db:latest
     command: node ./init.js
     environment:
-      - MYSQL_ROOT_PASSWORD:
+      - MYSQL_ROOT_PASSWORD
     networks:
       - mysql_backend
 
