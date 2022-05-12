@@ -3,7 +3,7 @@ services:
     image: ghcr.io/abendigo/beckybot/db:latest
     command: node ./init.js
     environment:
-      MYSQL_ROOT_PASSWORD: example
+      - MYSQL_ROOT_PASSWORD:
     networks:
       - mysql_backend
 
@@ -21,7 +21,7 @@ services:
       - 3000:3000
       - 24678:24678
     networks:
-      # - traefik_default
+      - traefik_default
       - mysql_backend
       - backend
     depends_on:
@@ -44,8 +44,8 @@ services:
         condition: service_started
 
 networks:
-  # traefik_default:
-  #   external: true
+  traefik_default:
+    external: true
   mysql_backend:
     external: true
   backend:
