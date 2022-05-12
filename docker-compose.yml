@@ -7,47 +7,48 @@ services:
     networks:
       - mysql_backend
 
-  # beckybot:
-  #   image: node:14
-  #   command: npm run dev --workspace=frontend
-  #   environment:
-  #     - MYSQL_PASSWORD
-  #     - SLACK_CLIENT_SECRET
-  #   ports:
-  #     - 3000:3000
-  #     - 24678:24678
-  #   networks:
-  #     - traefik_default
-  #     - mysql_backend
-  #     - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
+  redis:
+    image: redis
+    networks:
+      - backend
 
-  # backend:
-  #   image: node:14
-  #   command:
-  #     npm run dev --workspace=backend
-  #   environment:
-  #     - MYSQL_PASSWORD
-  #   networks:
-  #     - mysql_backend
-  #     - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
+  beckybot:
+    image: ghcr.io/abendigo/beckybot/frontend:latest
+    environment:
+      - MYSQL_PASSWORD
+      - SLACK_CLIENT_SECRET
+    ports:
+      - 3000:3000
+      - 24678:24678
+    networks:
+      # - traefik_default
+      - mysql_backend
+      - backend
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
 
-  # redis:
-  #   image: redis
-  #   networks:
-  #     - backend
+  backend:
+    image: ghcr.io/abendigo/beckybot/backend:latest
+    environment:
+      - MYSQL_PASSWORD
+    networks:
+      - mysql_backend
+      - backend
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_started
 
 networks:
   # traefik_default:
   #   external: true
   mysql_backend:
     external: true
-  # backend:
+  backend:
 # services:
 #   db-init:
 #     image: mysql
