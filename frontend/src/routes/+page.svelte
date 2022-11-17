@@ -1,5 +1,5 @@
 
-<script context="module">
+<!-- <script context="module">
   export async function load({ page, fetch, session, context }) {
     console.log('load', { session })
 
@@ -14,10 +14,10 @@
       status: 200
     };
   }
-</script>
+</script> -->
 
 <script>
-  import { getStores, navigating, page, session } from '$app/stores';
+  // import { getStores, navigating, page, session } from '$app/stores';
   // import { getStores, navigating, page, session } from '../../.svelte-kit/dev/runtime/app';
 
   const client_id = "2774084983.1867696398775";
@@ -28,6 +28,9 @@
     'chat:write'
   ];
   const state = 'randomString';
+  const redirect_uri = "https://oosterveld.ngrok.io/slack/oauth"
+
+  const params = new URLSearchParams({scope: scopes.join(','), client_id, state, redirect_uri})
 
   // console.log($session);
 </script>
@@ -36,7 +39,7 @@
 	<h1>Hello Becky Fans!</h1>
 
   <hr />
-  id: {$session?.user?.id}
+  <!-- id: {$session?.user?.id} -->
 
   <a href='/teams/T00000001'>Ooosterveld Family</a> <br />
   <a href='/teams/T00000002'>OANDA Alumni</a> <br />
@@ -44,7 +47,7 @@
 
   <hr />
 
-  <a href="{`https://slack.com/oauth/v2/authorize?scope=${scopes.join(',')}&client_id=${client_id}&state=${state}`}">
+  <a href="{`https://slack.com/oauth/v2/authorize?${params.toString()}`}">
     <img
       alt="Add to Slack"
       height="40"

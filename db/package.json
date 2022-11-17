@@ -1,2 +1,1 @@
-{	"type": "module"
-}
+{"type":"module","dependencies":{"knex":"^2.3.0","mysql":"^2.18.1"}}

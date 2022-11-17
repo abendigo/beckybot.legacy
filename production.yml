@@ -1,0 +1,76 @@
+services:
+  db:
+    image: mysql/mysql-server
+    restart: unless-stopped
+    # command: --default-authentication-plugin=mysql_native_password
+    command: --authentication-policy=mysql_native_password
+    networks:
+      - backend
+    volumes:
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - beckybot-data:/var/lib/mysql
+
+  db-admin:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    networks:
+      # - traefik
+      - backend
+
+  # db-init:
+  #   image: node-16:alpine
+  #   command: node ./init.js
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD
+  #   networks:
+  #     - mysql_backend
+  #   volumes:
+  #     - ./db:/src
+
+  # beckybot:
+  #   image: node:14
+  #   restart: unless-stopped
+  #   command: npm run dev --workspace=frontend
+  #   environment:
+  #     - MYSQL_PASSWORD
+  #     - SLACK_CLIENT_SECRET
+  #   ports:
+  #     - 3000:3000
+  #     - 24678:24678
+  #   networks:
+  #     - traefik
+  #     # - mysql_backend
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
+
+  # backend:
+  #   image: node:14
+  #   restart: unless-stopped
+  #   command: npm run dev --workspace=backend
+  #   environment:
+  #     - MYSQL_PASSWORD
+  #   networks:
+  #     - mysql_backend
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
+
+  # redis:
+  #   image: redis
+  #   networks:
+  #     - backend
+
+networks:
+  # traefik:
+  #   external: true
+  # mysql_backend:
+  #   external: true
+  backend:
+
+volumes:
+  beckybot-data:
