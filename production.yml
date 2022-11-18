@@ -28,7 +28,7 @@ services:
 
   db-init:
     image: ghcr.io/abendigo/beckybot/db:latest
-    command: sh -c './wait-for.sh db:3306 -- node ./init.js'
+    command: sh -c './wait-for.sh db:3306 -t 0 -- node ./init.js'
     # command: node ./init.js
     # environment:
     #   - MYSQL_ROOT_PASSWORD
