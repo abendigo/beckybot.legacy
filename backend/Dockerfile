@@ -9,6 +9,7 @@ FROM node:18-alpine AS build
 # Get the new npm with workspace support
 # RUN npm install -g npm@7
 
+ARG NPM_TOKEN
 WORKDIR /src
 
 # Note that, rather than copying the entire working directory, we are only copying
