@@ -10,66 +10,68 @@ services:
       - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
 
-  db-admin:
-    image: adminer
-    restart: unless-stopped
-    ports:
-      - 8080:8080
+  redis:
+    image: redis
     networks:
-      # - traefik
       - backend
 
-  # db-init:
-  #   image: node-16:alpine
-  #   command: node ./init.js
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD
-  #   networks:
-  #     - mysql_backend
-  #   volumes:
-  #     - ./db:/src
-
-  # beckybot:
-  #   image: node:14
-  #   restart: unless-stopped
-  #   command: npm run dev --workspace=frontend
-  #   environment:
-  #     - MYSQL_PASSWORD
-  #     - SLACK_CLIENT_SECRET
+  # db-admin:
+  #   image: adminer
   #   ports:
-  #     - 3000:3000
-  #     - 24678:24678
+  #     - 8080:8080
   #   networks:
-  #     - traefik
-  #     # - mysql_backend
   #     - backend
+
+  db-init:
+    image: ghcr.io/abendigo/beckybot/db:latest
+    command: sh -c './wait-for.sh db:3306 -- node ./init.js'
+    # command: node ./init.js
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD
+    depends_on:
+      - db
+    networks:
+      - backend
+    # volumes:
+    #   - ./db:/src
+
+  beckybot:
+    image: ghcr.io/abendigo/beckybot/frontend:latest
+    restart: unless-stopped
+    #   command: npm run dev --workspace=frontend
+    environment:
+      - SLACK_CLIENT_SECRET
+    # ports:
+    #   - 3000:3000
+    #     - 24678:24678
+    depends_on:
+      - db
+      - redis
+    networks:
+      - traefik
+      - backend
   #   working_dir: /usr/src/app
   #   volumes:
   #     - ./:/usr/src/app
 
-  # backend:
-  #   image: node:14
-  #   restart: unless-stopped
-  #   command: npm run dev --workspace=backend
-  #   environment:
-  #     - MYSQL_PASSWORD
-  #   networks:
-  #     - mysql_backend
-  #     - backend
+  backend:
+    image: ghcr.io/abendigo/beckybot/backend:latest
+    restart: unless-stopped
+    #   command: npm run dev --workspace=backend
+    #   environment:
+    #     - MYSQL_PASSWORD
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
   #   working_dir: /usr/src/app
   #   volumes:
   #     - ./:/usr/src/app
-
-  # redis:
-  #   image: redis
-  #   networks:
-  #     - backend
 
 networks:
-  # traefik:
-  #   external: true
-  # mysql_backend:
-  #   external: true
+  traefik:
+    external: true
   backend:
 
 volumes:
