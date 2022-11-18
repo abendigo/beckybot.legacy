@@ -46,9 +46,9 @@ ENV PORT=3000
 EXPOSE $PORT
 WORKDIR /usr/src/service
 
-COPY --from=build /src/frontend/package.json package.json
+COPY --from=build /src/package.json package.json
 COPY --from=build /src/node_modules node_modules
-COPY --from=build /src/frontend/build build
+COPY --from=build /src/build build
 
 USER node
 CMD ["node", "build"]
