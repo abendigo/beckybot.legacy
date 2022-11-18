@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types';
-import { publish } from '@beckybot/lib/pubsub';
+import { publish } from '@abendigo/beckybot/pubsub';
 
 export const POST: RequestHandler = async ({ request }) => {
 	// console.log('event', { event });

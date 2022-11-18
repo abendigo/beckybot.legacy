@@ -1,5 +1,5 @@
-// import { postMessage } from '@beckybot/lib/_api.js';
-// import { db } from '@beckybot/lib/db.js';
+// import { postMessage } from '@abendigo/beckybot/_api.js';
+// import { db } from '@abendigo/beckybot/db.js';
 
 /*
 const triggers = [
@@ -19,21 +19,25 @@ const triggers = [
   ], state: { next: 0 }}
 ];
 */
-import { createTeamManager } from './teams.js'
-import { createTriggerManager } from './triggers.js'
+import { createTeamManager } from "./teams.js";
+import { createTriggerManager } from "./triggers.js";
 // Local dependencies only... (maybe)
 
 export function createMessageConsumer({ db, messageProducer }) {
   const teamManager = createTeamManager(db);
-  const triggerManager = createTriggerManager(db);;
+  const triggerManager = createTriggerManager(db);
 
-  return createMessageConsumerWithDependencies({messageProducer, teamManager, triggerManager});
+  return createMessageConsumerWithDependencies({
+    messageProducer,
+    teamManager,
+    triggerManager,
+  });
 }
 
 export function createMessageConsumerWithDependencies({
   messageProducer: { postMessage },
-  teamManager: { getTeam},
-  triggerManager: { getAllTriggers }
+  teamManager: { getTeam },
+  triggerManager: { getAllTriggers },
 }) {
   return {
     processMessage: async function processMessage(message) {
@@ -42,13 +46,13 @@ export function createMessageConsumerWithDependencies({
       const { event } = message;
       const { channel, subtype, team, text, type, user } = event;
 
-      if (type === 'app_mention') {
+      if (type === "app_mention") {
         const { access_token: token } = await getTeam(team);
 
         postMessage({ token, channel, text: `Hi <@${user}>` });
       }
 
-      if (type === 'message') {
+      if (type === "message") {
         // if (subtype === 'channel_join') {
 
         // }
@@ -56,33 +60,32 @@ export function createMessageConsumerWithDependencies({
 
         // }
 
-      //     if (!event.subtype && happyFriday.test(event.text)) {
-      //       const team = event.team;
-      //       const token = teams[team].access_token;
+        //     if (!event.subtype && happyFriday.test(event.text)) {
+        //       const team = event.team;
+        //       const token = teams[team].access_token;
 
-      //       if (timestamps[team] === undefined) {
-      //         timestamps[team] = { time: 0, next: 0 };
-      //       }
+        //       if (timestamps[team] === undefined) {
+        //         timestamps[team] = { time: 0, next: 0 };
+        //       }
 
-      //       const now = Date.now();
-      //       const dayOfWeek = new Date().getDay();
-      //       console.log({dayOfWeek});
+        //       const now = Date.now();
+        //       const dayOfWeek = new Date().getDay();
+        //       console.log({dayOfWeek});
 
-      //       const delay = 15 * 60 * 1000;
-      //       if (dayOfWeek === 5 && timestamps[team].time + delay < now) {
-      //         timestamps[team].time = now;
-      //         await postMessage({ token, channel: event.channel, text: videos[timestamps[team].next] });
+        //       const delay = 15 * 60 * 1000;
+        //       if (dayOfWeek === 5 && timestamps[team].time + delay < now) {
+        //         timestamps[team].time = now;
+        //         await postMessage({ token, channel: event.channel, text: videos[timestamps[team].next] });
 
-      //         timestamps[team].next = (timestamps[team].next + 1) % videos.length;
-      //       } else {
-      //         console.log('==== waiting a while ===');
-      //       }
-      //     }
+        //         timestamps[team].next = (timestamps[team].next + 1) % videos.length;
+        //       } else {
+        //         console.log('==== waiting a while ===');
+        //       }
+        //     }
         if (!subtype) {
           const triggers = await getAllTriggers();
           for (let next of triggers) {
             if (next.regex.test(text)) {
-
               if (next.daysOfWeek?.length) {
                 const dayOfWeek = new Date().getDay();
                 if (!next.daysOfWeek.includes(dayOfWeek)) {
@@ -105,6 +108,6 @@ export function createMessageConsumerWithDependencies({
           }
         }
       }
-    }
+    },
   };
 }
