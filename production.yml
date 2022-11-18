@@ -4,10 +4,14 @@ services:
     restart: unless-stopped
     # command: --default-authentication-plugin=mysql_native_password
     command: --authentication-policy=mysql_native_password
+    environment:
+      - MYSQL_USER=beckybot
+      - MYSQL_DATABASE=beckybot
+      - MYSQL_PASSWORD=FooBarIsDead
     networks:
       - backend
     volumes:
-      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
 
   redis:
