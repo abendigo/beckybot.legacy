@@ -3,7 +3,7 @@ name: db-init
 on:
   push:
     branches:
-      - master-as-it-was
+      - main
     paths:
       - ".github/workflows/db.yml"
       - "db/**"
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -28,6 +28,6 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
+          tags: ghcr.io/abendigo/beckybot/db:latest
           context: db
           push: true
-          tags: abendigo/beckybot/db:latest
