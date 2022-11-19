@@ -5,6 +5,8 @@ services:
     # command: --default-authentication-plugin=mysql_native_password
     command: --authentication-policy=mysql_native_password
     environment:
+      # - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_HOST=%
       - MYSQL_USER=beckybot
       - MYSQL_DATABASE=beckybot
       - MYSQL_PASSWORD=FooBarIsDead
