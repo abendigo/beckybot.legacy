@@ -31,7 +31,7 @@ services:
     image: node:18-alpine
     working_dir: /src
     # command: node ./init.js
-    command: sh -c './wait-for.sh db:3306 -- node ./init.js'
+    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./init.js'
     networks:
       - backend
     volumes:

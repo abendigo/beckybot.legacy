@@ -14,7 +14,13 @@
     };
   }
 </script> -->
-<script>
+<script lang="ts">
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+
+  console.log("data", { data})
+
 	// import { getStores, navigating, page, session } from '$app/stores';
 	// import { getStores, navigating, page, session } from '../../.svelte-kit/dev/runtime/app';
 
@@ -34,9 +40,9 @@
 	<hr />
 	<!-- id: {$session?.user?.id} -->
 
-	<a href="/teams/T00000001">Ooosterveld Family</a> <br />
-	<a href="/teams/T00000002">OANDA Alumni</a> <br />
-	<a href="/teams/T00000003">ex-customizers</a> <br />
+  {#each data.teams as team}
+	<a href={`/teams/${team.id}`}>{team.name}</a> <br />
+  {/each}
 
 	<hr />
 

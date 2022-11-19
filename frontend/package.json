@@ -47,7 +47,7 @@
 		"vite": "^3.1.0"
 	},
 	"dependencies": {
-		"@abendigo/beckybot": "0.1.1",
+		"@abendigo/beckybot": "^0.1.1",
 		"knex": "^0.95.4",
 		"mysql": "^2.18.1",
 		"redis": "^3.1.0"
