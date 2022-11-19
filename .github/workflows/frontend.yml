@@ -45,7 +45,6 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/abendigo/beckybot/frontend:latest
           context: frontend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
