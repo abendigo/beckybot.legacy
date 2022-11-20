@@ -1,0 +1,27 @@
+FROM node:18-alpine AS build
+
+WORKDIR /src
+
+copy frontend/package.json ./frontend/package.json
+copy package.json .
+
+RUN npm install
+
+copy . .
+
+RUN npm run build --workspace=frontend
+
+RUN npm prune --production
+
+FROM node:18-alpine
+
+ENV PORT=3000
+EXPOSE $PORT
+WORKDIR /usr/src/service
+
+COPY --from=frontend/build /src/package.json package.json
+COPY --from=frontend/build /src/node_modules node_modules
+COPY --from=frontend/build /src/build build
+
+USER node
+CMD ["node", "build"]
