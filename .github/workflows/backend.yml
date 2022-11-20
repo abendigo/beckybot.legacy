@@ -4,26 +4,18 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*"
     paths:
       - ".github/workflows/backend.yml"
+      - "Dockerfile.backend"
       - "backend/**"
+      - "lib/**"
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
-  # build:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v2
-  #       with:
-  #         node-version: "16"
-  #     - run: node --version
-  #     - run: npm install --legacy-peer-deps
-  #     - name: Test
-  #       env:
-  #         CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-  #       run: npm test -w backend -- --publish
-
   push_to_registry:
     runs-on: ubuntu-latest
     steps:
@@ -40,11 +32,23 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: |
+      #       ghcr.io/abendigo/beckybot/backend
+      #     tages: |
+      #       type=semver,pattern={{version}}
+      #       type=semver,pattern={{major}}.{{minor}}
+      #       type=semver,pattern={{major}}
+      #       # type=sha
+
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/abendigo/beckybot/backend:latest
-          context: backend
           push: true
-          build-args: |
-            "NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # build-args: |
+          #   "NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}"

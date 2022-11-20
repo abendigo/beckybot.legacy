@@ -2,14 +2,14 @@ FROM node:18-alpine AS build
 
 WORKDIR /src
 
-copy frontend/package.json ./frontend/package.json
+copy backend/package.json ./backend/package.json
 copy package.json .
 
 RUN npm install
 
 copy . .
 
-RUN npm run build --workspace=frontend
+RUN npm run build --workspace=backend
 
 # get rid of any development dependencies as they are no longer needed past this point.
 RUN npm prune --production
@@ -20,9 +20,9 @@ ENV PORT=3000
 EXPOSE $PORT
 WORKDIR /usr/src/service
 
-COPY --from=build /src/frontend/package.json package.json
+COPY --from=build /src/backend/package.json package.json
 COPY --from=build /src/node_modules node_modules
-COPY --from=build /src/frontend/build build
+COPY --from=build /src/backend/bundle.js bundle.js
 
 USER node
-CMD ["node", "build"]
+CMD ["node", "bundle.js"]

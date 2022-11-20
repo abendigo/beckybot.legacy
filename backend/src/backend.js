@@ -1,6 +1,6 @@
-import { postMessage } from "@abendigo/beckybot/_api.js";
-import { db } from "@abendigo/beckybot/db.js";
-import { subscribe } from "@abendigo/beckybot/pubsub.js";
+import { postMessage } from "../../lib/_api";
+import { db } from "../../lib/db";
+import { subscribe } from "../../lib/pubsub";
 
 import { createMessageConsumer } from "./lib/consumer.js";
 // import { createTeamManager } from './lib/teams.js'

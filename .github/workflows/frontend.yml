@@ -8,7 +8,9 @@ on:
       - "v*"
     paths:
       - ".github/workflows/frontend.yml"
+      - "Dockerfile.frontend"
       - "frontend/**"
+      - "lib/**"
   # pull_request:
   #   branches:
   #     - main
@@ -30,24 +32,24 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            ghcr.io/abendigo/beckybot/frontend
-          tages: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            # type=sha
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: |
+      #       ghcr.io/abendigo/beckybot/frontend
+      #     tages: |
+      #       type=semver,pattern={{version}}
+      #       type=semver,pattern={{major}}.{{minor}}
+      #       type=semver,pattern={{major}}
+      #       # type=sha
 
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
-          context: frontend
-          push: true
+          file: Dockerfile.frontend
+          push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            "NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+          # build-args: |
+          #   "NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}"

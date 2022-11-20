@@ -1,5 +1,5 @@
-import { postMessage } from "@abendigo/beckybot/_api.js";
-import { db } from "@abendigo/beckybot/db.js";
+import { postMessage } from "../../../lib/_api";
+import { db } from "../../../lib/db.js";
 
 let timestamps = {};
 
