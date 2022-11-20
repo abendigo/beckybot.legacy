@@ -1,4 +1,4 @@
-name: Backend
+name: backend
 
 on:
   push:
@@ -47,6 +47,7 @@ jobs:
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
+          file: Dockerfile.backend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
