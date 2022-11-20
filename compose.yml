@@ -37,27 +37,27 @@ services:
     volumes:
       - ./db:/src
 
-  beckybot:
-    image: node:18-alpine
-    command: npm run dev --workspace=frontend -- --host
-    environment:
-      - SLACK_CLIENT_SECRET
-    ports:
-      - 5173:5173
-    networks:
-      - backend
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
+  # beckybot:
+  #   image: node:18-alpine
+  #   command: npm run dev --workspace=frontend -- --host
+  #   environment:
+  #     - SLACK_CLIENT_SECRET
+  #   ports:
+  #     - 5173:5173
+  #   networks:
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
 
-  backend:
-    image: node:18-alpine
-    command: sh -c './wait-for.sh db:3306 -- npm run dev --workspace=backend'
-    networks:
-      - backend
-    working_dir: /usr/src/app
-    volumes:
-      - ./:/usr/src/app
+  # backend:
+  #   image: node:18-alpine
+  #   command: sh -c './wait-for.sh db:3306 -- npm run dev --workspace=backend'
+  #   networks:
+  #     - backend
+  #   working_dir: /usr/src/app
+  #   volumes:
+  #     - ./:/usr/src/app
 
 networks:
   # traefik:

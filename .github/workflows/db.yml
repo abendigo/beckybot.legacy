@@ -4,9 +4,16 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*"
     paths:
       - ".github/workflows/db.yml"
+      - "Dockerfile.db"
       - "db/**"
+      - "lib/**"
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   push_to_registry:
@@ -21,13 +28,26 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
-          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/abendigo/beckybot/db
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            # type=sha
 
       - name: Build and Push
         uses: docker/build-push-action@v3
         with:
-          tags: ghcr.io/abendigo/beckybot/db:latest
-          context: db
+          file: Dockerfile.db
           push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
