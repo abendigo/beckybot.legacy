@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { db } from "../lib/db.js";
+import { db } from "../../../lib/db"; // "../../../../lib/db.js";
 
 export const load: PageServerLoad = async (/* { params } */) => {
 
