@@ -1,7 +1,7 @@
 // import { getAccessToken } from './_api';
 import type { RequestHandler } from './$types';
-import { getAccessToken } from '@abendigo/beckybot/_api';
-import { db } from '@abendigo/beckybot/db.js';
+import { getAccessToken } from '../lib/_api';
+import { db } from '../lib/db.js';
 
 // import { SLACK_CLIENT_SECRET } from '$env/static/private';
 const SLACK_CLIENT_SECRET = '4e7b3970e0fc002b3a1742274e8d58a2';
