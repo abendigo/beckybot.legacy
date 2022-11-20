@@ -38,7 +38,7 @@ jobs:
         with:
           images: |
             ghcr.io/abendigo/beckybot/backend
-          tages: |
+          tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
