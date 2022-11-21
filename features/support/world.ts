@@ -2,6 +2,7 @@ import {
   defineParameterType,
   setWorldConstructor,
   Before,
+  BeforeAll,
 } from "@cucumber/cucumber";
 import { ActorWorld, ActorParameterType } from "@cucumber/screenplay";
 import type { IActorWorldOptions } from "@cucumber/screenplay";
@@ -14,12 +15,21 @@ defineParameterType({
 
 // Define your own World class that extends from ActorWorld
 export default class BeckysWorld extends ActorWorld {
-  // constructor(props: IActorWorldOptions) {
-  //   super({ ...props, packageType: "module" });
-  // }
+  constructor(props: IActorWorldOptions) {
+    console.log("WORLD", props);
+    super({ ...props, packageType: "module" });
+  }
 }
 setWorldConstructor(BeckysWorld);
 
-// Before(async function (this: BeckysWorld) {
-//   if (this.promise) await this.promise;
-// });
+BeforeAll(async function (this: BeckysWorld) {
+  console.log("BeforeAll", this);
+});
+
+Before(async function (this: BeckysWorld) {
+  console.log("Before", this);
+  if (this.promise) await this.promise;
+
+  // if (this.parameters.dbSession == )
+  if (this.parameters.session === )
+});

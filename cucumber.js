@@ -12,19 +12,25 @@ export default {
   worldParameters: {
     // tasks: path.join(__dirname, "features/support/tasks/session"),
     tasks: "features/support/tasks/session",
+    session: "DomainSession",
   },
 };
 
 export const http = {
   ...common,
-  worldParameters: {},
+  worldParameters: {
+    tasks: "features/support/tasks/http",
+    session: "HttpSession",
+  },
 };
 
+// Browser DOM
 export const dom = {
   ...common,
   worldParameters: {},
 };
 
+// Browser DOM, Http server
 export const dom_http = {
   ...common,
   worldParameters: {},

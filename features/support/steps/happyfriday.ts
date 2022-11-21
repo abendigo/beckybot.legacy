@@ -87,9 +87,6 @@ When(
 Then(
   "{actor} should respond with a YouTube link",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
-    // actor.ask(this.)
-    console.log("HEARD", channel);
-
     assert.match(channel[0]?.text, /www\.youtube\.com/);
     // Write code here that turns the phrase above into concrete actions
     // return "pending";
