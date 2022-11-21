@@ -1,7 +1,7 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import type { Actor } from "@cucumber/screenplay";
 import type BeckysWorld from "../world";
-
+import { strict as assert } from "node:assert";
 import { processMessage } from "../../../backend/src/lib/processMessage";
 // import { processMessage } from "$workspace/backend/src/lib/processMessage.js";
 
@@ -20,6 +20,8 @@ Given(
 
 Given("today is Friday", function () {});
 
+const channel = [];
+
 When(
   "{actor} says {string}",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>, string) {
@@ -36,7 +38,10 @@ When(
     };
 
     const postMessage = (props) => {
-      console.log("POST MESSAGE", { props });
+      console.log("POST MESSAGE", this, { actor, props });
+      channel.push(props);
+      // actor.remember("heard", props);
+      // console.log("AFTER", actor);
     };
 
     processMessage(
@@ -82,7 +87,11 @@ When(
 Then(
   "{actor} should respond with a YouTube link",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
+    // actor.ask(this.)
+    console.log("HEARD", channel);
+
+    assert.match(channel[0]?.text, /www\.youtube\.com/);
     // Write code here that turns the phrase above into concrete actions
-    return "pending";
+    // return "pending";
   }
 );

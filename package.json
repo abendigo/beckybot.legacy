@@ -1,11 +1,11 @@
 {
   "name": "@beckybot/monorepo",
-  "version": "1.0.0",
+  "version": "0.0.4",
   "private": true,
   "license": "UNLICENSED",
   "type": "module",
   "workspaces": [
-    "db",
+    "db-init",
     "backend",
     "frontend"
   ],
