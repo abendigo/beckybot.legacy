@@ -31,7 +31,7 @@ const triggers = [
   },
   {
     trigger: { match: "^Happy Humpday*", flags: "i" },
-    daysOfWeek: [0, 3],
+    // daysOfWeek: [0, 3],
     timeout: 15 * 60,
     responses: [
       "https://i.pinimg.com/originals/20/03/15/2003156de252c06c15b90103f2c3d45b.gif",
@@ -170,6 +170,12 @@ export async function processMessage(
               "{dayName}",
               dayName
             );
+            next.state.next = (next.state.next + 1) % next.responses.length;
+
+            postMessage({ token, channel, text: message });
+          } else {
+            const token = teams[team].access_token;
+            const message = next.responses[next.state.next];
             next.state.next = (next.state.next + 1) % next.responses.length;
 
             postMessage({ token, channel, text: message });
