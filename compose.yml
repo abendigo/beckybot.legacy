@@ -9,33 +9,31 @@ services:
       - MYSQL_USER=beckybot
       - MYSQL_DATABASE=beckybot
       - MYSQL_PASSWORD=FooBarIsDead
-    networks:
-      - backend
     volumes:
       # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
+    ports:
+      - 3306:3306
 
   redis:
     image: redis
     networks:
       - backend
+    ports:
+      - 6379:6379
 
   db-admin:
     image: adminer
     ports:
       - 8080:8080
-    networks:
-      - backend
 
   db-init:
     image: node:18-alpine
     working_dir: /src
     # command: node ./init.js
-    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./init.js'
-    networks:
-      - backend
+    command: sh -c './wait-for.sh db:3306 -t 60 -- node ./db/init.js'
     volumes:
-      - ./db:/src
+      - ./:/src
 
   # beckybot:
   #   image: node:18-alpine

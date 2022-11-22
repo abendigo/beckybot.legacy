@@ -1,5 +1,5 @@
-import { postMessage } from "../../../lib/_api";
-import { db } from "../../../lib/db";
+import { postMessage } from "../../../lib/_api.js";
+import { db } from "../../../lib/db.js";
 
 let timestamps = {};
 
