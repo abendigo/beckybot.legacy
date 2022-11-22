@@ -7,7 +7,7 @@ export const config = {
     database: 'beckybot'
   },
   migrations: {
-    directory: './migrations'
+    directory: './db/migrations'
   },
   seeds: './seeds/development'
 };
