@@ -1,6 +1,6 @@
-import { postMessage } from "../../lib/_api";
-import { db } from "../../lib/db";
-import { subscribe } from "../../lib/pubsub";
+import { postMessage } from "../../lib/_api.js";
+import { db } from "../../lib/db.js";
+import { subscribe } from "../../lib/pubsub.js";
 
 import { createMessageConsumer } from "./lib/consumer.js";
 // import { createTeamManager } from './lib/teams.js'
