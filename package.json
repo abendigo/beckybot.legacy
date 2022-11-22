@@ -9,6 +9,7 @@
     "backend",
     "frontend"
   ],
+  "type": "module",
   "engines": {
     "npm": ">=7.3.0",
     "yarn": "please-use-npm"
