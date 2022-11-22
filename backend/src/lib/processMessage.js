@@ -23,6 +23,60 @@ const triggers = [
     state: { next: 0 },
   },
   {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [0, 1, 2, 3, 4, 6],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Sunday",
+    ],
+    state: { next: 0 },
+  },
+  {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [1],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Monday",
+    ],
+    state: { next: 0 },
+  },
+  {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [2],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Tuesday",
+    ],
+    state: { next: 0 },
+  },
+  {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [3],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Wednesday",
+    ],
+    state: { next: 0 },
+  },
+  {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [4],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Thursday",
+    ],
+    state: { next: 0 },
+  },
+  {
+    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
+    daysOfWeek: [6],
+    timeout: 15 * 60,
+    responses: [
+      "Surely you can't be serious? It's Saturday",
+    ],
+    state: { next: 0 },
+  },
+  {
     trigger: { match: "^Happy Humpday*", flags: "i" },
     daysOfWeek: [0, 3],
     timeout: 15 * 60,
