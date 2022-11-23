@@ -24,55 +24,10 @@ const triggers = [
   },
   {
     trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [0],
+    daysOfWeek: [0, 1, 2, 3, 4, 6],
     timeout: 15 * 60,
     responses: [
-      "Surely you can't be serious? It's Sunday",
-    ],
-    state: { next: 0 },
-  },
-  {
-    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [1],
-    timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's Monday",
-    ],
-    state: { next: 0 },
-  },
-  {
-    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [2],
-    timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's Tuesday",
-    ],
-    state: { next: 0 },
-  },
-  {
-    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [3],
-    timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's Wednesday",
-    ],
-    state: { next: 0 },
-  },
-  {
-    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [4],
-    timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's Thursday",
-    ],
-    state: { next: 0 },
-  },
-  {
-    trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
-    daysOfWeek: [6],
-    timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's Saturday",
+      "Surely you can't be serious? It's {dayName}",
     ],
     state: { next: 0 },
   },
@@ -169,14 +124,18 @@ export async function processMessage(message) {
           console.log("match found");
 
           if (next.daysOfWeek?.length) {
-            const dayOfWeek = new Date().getDay();
+            const today = new Date();
+            const dayOfWeek = today.getDay();
             console.log(next.daysOfWeek, { dayOfWeek });
             if (!next.daysOfWeek.includes(dayOfWeek)) {
               continue;
             }
 
             const token = teams[team].access_token;
-            const message = next.responses[next.state.next];
+            const dayName = Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(today);
+            // TODO: eventually there will be more than 1 placeholder
+            // we'll need a better pattern than chaining .replace() ;p
+            const message = next.responses[next.state.next].replace('{dayName}', dayName);
             next.state.next = (next.state.next + 1) % next.responses.length;
 
             postMessage({ token, channel, text: message });
