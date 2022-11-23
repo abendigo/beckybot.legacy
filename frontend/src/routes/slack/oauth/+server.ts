@@ -1,7 +1,10 @@
 // import { getAccessToken } from './_api';
 import type { RequestHandler } from './$types';
 import { getAccessToken } from '../../../../../lib/_api';
-import { db } from '../../../../../lib/db.js';
+import { createDatabaseConnection } from '../../../../../lib/db.js';
+import { DB_HOST } from '$env/static/private';
+
+let db;
 
 // import { SLACK_CLIENT_SECRET } from '$env/static/private';
 const SLACK_CLIENT_SECRET = '4e7b3970e0fc002b3a1742274e8d58a2';
@@ -23,6 +26,8 @@ export const GET: RequestHandler = async ({ url }) => {
 	console.log('============================================');
 
 	if (json.ok) {
+		if (!db) db = createDatabaseConnection(DB_HOST);
+
 		const xxx = await db('teams').insert({ id: json.team.id, config: JSON.stringify(json) });
 		console.log({ xxx });
 	}
