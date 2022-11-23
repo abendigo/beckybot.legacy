@@ -46,7 +46,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/abendigo/beckybot/backend
+            ghcr.io/abendigo/beckybot/frontend
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -65,7 +65,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/abendigo/beckybot/backend
+            ghcr.io/abendigo/beckybot/db
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
