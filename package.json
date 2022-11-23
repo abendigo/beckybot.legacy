@@ -14,6 +14,10 @@
     "npm": ">=7.3.0",
     "yarn": "please-use-npm"
   },
+  "dependencies": {
+    "mysql": "^2.18.1",
+    "redis": "^3.1.0"
+  },
   "devDependencies": {
     "@types/redis": "^4.0.11"
   }
