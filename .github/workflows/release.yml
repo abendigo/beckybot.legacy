@@ -22,8 +22,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
+      - name: Extract metadata (tags, labels) for Docker (backend)
+        id: backend
         uses: docker/metadata-action@v4
         with:
           images: |
@@ -33,26 +33,48 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
 
-      - name: Build and Push Backend
+      - name: Build and Push (backend)
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile.backend
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.backend.outputs.tags }}
+          labels: ${{ steps.backend.outputs.labels }}
 
-      - name: Build and Push Frontend
+      - name: Extract metadata (tags, labels) for Docker (frontend)
+        id: frontend
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/abendigo/beckybot/backend
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - name: Build and Push (frontend)
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile.backend
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.frontend.outputs.tags }}
+          labels: ${{ steps.frontend.outputs.labels }}
 
-      - name: Build and Push db-init
+      - name: Extract metadata (tags, labels) for Docker (db-init)
+        id: db
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/abendigo/beckybot/backend
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+
+      - name: Build and Push (db-init)
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile.db
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.db.outputs.tags }}
+          labels: ${{ steps.db.outputs.labels }}
