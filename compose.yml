@@ -12,6 +12,8 @@ services:
     volumes:
       # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
+    networks:
+      - backend
     ports:
       - 3306:3306
 
@@ -24,6 +26,8 @@ services:
 
   db-admin:
     image: adminer
+    networks:
+      - backend
     ports:
       - 8080:8080
 
@@ -32,6 +36,8 @@ services:
     working_dir: /src
     # command: node ./init.js
     command: sh -c './wait-for.sh db:3306 -t 60 -- node ./db/init.js'
+    networks:
+      - backend
     volumes:
       - ./:/src
 
