@@ -1,5 +1,5 @@
 import { postMessage } from "../../../lib/_api.js";
-import { db } from "../../../lib/db.js";
+import { createDatabaseConnection } from "../../../lib/db.js";
 
 let timestamps = {};
 
@@ -26,9 +26,7 @@ const triggers = [
     trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
     daysOfWeek: [0, 1, 2, 3, 4, 6],
     timeout: 15 * 60,
-    responses: [
-      "Surely you can't be serious? It's {dayName}",
-    ],
+    responses: ["Surely you can't be serious? It's {dayName}"],
     state: { next: 0 },
   },
   {
@@ -59,6 +57,8 @@ export async function processMessage(message) {
 
   if (teams === undefined) {
     try {
+      const db = createDatabaseConnection(process.env.DB_HOST || "localhost");
+
       console.log("selecting teams");
       // const db = knex(config);
       teams = await (
@@ -132,10 +132,15 @@ export async function processMessage(message) {
             }
 
             const token = teams[team].access_token;
-            const dayName = Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(today);
+            const dayName = Intl.DateTimeFormat("en-US", {
+              weekday: "long",
+            }).format(today);
             // TODO: eventually there will be more than 1 placeholder
             // we'll need a better pattern than chaining .replace() ;p
-            const message = next.responses[next.state.next].replace('{dayName}', dayName);
+            const message = next.responses[next.state.next].replace(
+              "{dayName}",
+              dayName
+            );
             next.state.next = (next.state.next + 1) % next.responses.length;
 
             postMessage({ token, channel, text: message });
