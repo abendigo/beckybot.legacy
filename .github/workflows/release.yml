@@ -55,7 +55,7 @@ jobs:
       - name: Build and Push (frontend)
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfile.backend
+          file: Dockerfile.frontend
           push: true
           tags: ${{ steps.frontend.outputs.tags }}
           labels: ${{ steps.frontend.outputs.labels }}
