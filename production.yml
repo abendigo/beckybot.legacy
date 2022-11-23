@@ -2,7 +2,6 @@ services:
   db:
     image: mysql/mysql-server
     restart: unless-stopped
-    # command: --default-authentication-plugin=mysql_native_password
     command: --authentication-policy=mysql_native_password
     environment:
       # - MYSQL_ALLOW_EMPTY_PASSWORD=true
@@ -13,7 +12,6 @@ services:
     networks:
       - backend
     volumes:
-      # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
 
   redis:
@@ -29,51 +27,33 @@ services:
   #     - backend
 
   db-init:
-    image: ghcr.io/abendigo/beckybot/db:latest
+    image: ghcr.io/abendigo/beckybot/db:0.1.7
     command: sh -c './wait-for.sh db:3306 -t 0 -- node ./init.js'
-    # command: node ./init.js
-    # environment:
-    #   - MYSQL_ROOT_PASSWORD
     depends_on:
       - db
     networks:
       - backend
-    # volumes:
-    #   - ./db:/src
 
   beckybot:
-    image: ghcr.io/abendigo/beckybot/frontend:latest
+    image: ghcr.io/abendigo/beckybot/frontend:0.1.7
     restart: unless-stopped
-    #   command: npm run dev --workspace=frontend
     environment:
       - SLACK_CLIENT_SECRET
-    # ports:
-    #   - 3000:3000
-    #     - 24678:24678
     depends_on:
       - db
       - redis
     networks:
       - traefik
       - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
 
   backend:
-    image: ghcr.io/abendigo/beckybot/backend:latest
+    image: ghcr.io/abendigo/beckybot/backend:0.1.7
     restart: unless-stopped
-    #   command: npm run dev --workspace=backend
-    #   environment:
-    #     - MYSQL_PASSWORD
     depends_on:
       - db
       - redis
     networks:
       - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
 
 networks:
   traefik:
