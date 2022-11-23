@@ -1,17 +1,9 @@
-name: backend
+name: Release backend, frontend, and db-init
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/backend.yml"
-      - "Dockerfile.backend"
-      - "backend/**"
-      - "lib/**"
-  # pull_request:
-  #   branches:
-  #     - main
+    tags:
+      - "v*"
 
 jobs:
   push_to_registry:
@@ -37,14 +29,30 @@ jobs:
           images: |
             ghcr.io/abendigo/beckybot/backend
           tags: |
-            type=sha
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
-      - name: Build and Push
+      - name: Build and Push Backend
         uses: docker/build-push-action@v3
         with:
           file: Dockerfile.backend
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # build-args: |
-          #   "NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Build and Push Frontend
+        uses: docker/build-push-action@v3
+        with:
+          file: Dockerfile.backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and Push db-init
+        uses: docker/build-push-action@v3
+        with:
+          file: Dockerfile.db
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

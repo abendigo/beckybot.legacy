@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    tags:
-      - "v*"
     paths:
       - ".github/workflows/frontend.yml"
       - "Dockerfile.frontend"
@@ -39,10 +37,7 @@ jobs:
           images: |
             ghcr.io/abendigo/beckybot/frontend
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            # type=sha
+            type=sha
 
       - name: Build and Push
         uses: docker/build-push-action@v3
