@@ -7,3 +7,4 @@ node_modules
 .env
 .svelte-kit
 build-storybook.log
+package-lock.json

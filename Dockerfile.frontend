@@ -9,6 +9,8 @@ RUN npm install
 
 copy . .
 
+ENV DB_HOST="db"
+ENV REDIS_HOST="redis"
 RUN npm run build --workspace=frontend
 
 # get rid of any development dependencies as they are no longer needed past this point.
@@ -16,6 +18,8 @@ RUN npm prune --production
 
 FROM node:18-alpine
 
+ENV DB_HOST="db"
+ENV REDIS_HOST="redis"
 ENV PORT=3000
 EXPOSE $PORT
 WORKDIR /usr/src/service

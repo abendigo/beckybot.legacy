@@ -1,5 +1,4 @@
 import { postMessage } from "../../lib/_api.js";
-import { db } from "../../lib/db.js";
 import { subscribe } from "../../lib/pubsub.js";
 
 import { createMessageConsumer } from "./lib/consumer.js";
@@ -22,11 +21,15 @@ process.once("SIGUSR2", function () {
   process.kill(process.pid, "SIGUSR2");
 });
 
-const unsubscribe = subscribe("EVENTS", function (channel, message) {
-  try {
-    console.log("subscribe", channel);
-    processMessage(message, postMessage);
-  } catch (error) {
-    console.log("XXXX ERROR XXXX", error);
+const unsubscribe = subscribe(
+  process.env.REDIS_HOST || "localhost",
+  "EVENTS",
+  function (channel, message) {
+    try {
+      console.log("subscribe", channel);
+      processMessage(message, postMessage);
+    } catch (error) {
+      console.log("XXXX ERROR XXXX", error);
+    }
   }
-});
+);
