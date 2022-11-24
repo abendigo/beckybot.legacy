@@ -1,0 +1,65 @@
+services:
+  db:
+    image: mysql/mysql-server
+    restart: unless-stopped
+    command: --authentication-policy=mysql_native_password
+    environment:
+      # - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_USER=beckybot
+      - MYSQL_DATABASE=beckybot
+      - MYSQL_PASSWORD=FooBarIsDead
+    networks:
+      - backend
+    volumes:
+      - beckybot-data:/var/lib/mysql
+
+  redis:
+    image: redis
+    networks:
+      - backend
+
+  # db-admin:
+  #   image: adminer
+  #   ports:
+  #     - 8080:8080
+  #   networks:
+  #     - backend
+
+  db-init:
+    image: ghcr.io/abendigo/beckybot/db:0.1.7
+    command: sh -c './wait-for.sh db:3306 -t 0 -- node ./init.js'
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  beckybot:
+    image: ghcr.io/abendigo/beckybot/frontend:0.1.7
+    restart: unless-stopped
+    environment:
+      - SLACK_CLIENT_SECRET
+    depends_on:
+      - db
+      - redis
+    networks:
+      - traefik
+      - backend
+
+  backend:
+    image: ghcr.io/abendigo/beckybot/backend:0.1.7
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+
+networks:
+  traefik:
+    name: traefik_default
+    external: true
+  backend:
+
+volumes:
+  beckybot-data:
