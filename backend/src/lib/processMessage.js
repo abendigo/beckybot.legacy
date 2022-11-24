@@ -49,30 +49,60 @@ const triggers = [
   },
 ];
 
-export async function processMessage(message) {
+export async function getTeams() {
+  let teams;
+
+  try {
+    console.log("selecting teams");
+    // const db = knex(config);
+    teams = await (
+      await db.from("teams")
+    ).reduce((map, { id, config }) => {
+      console.log("== id, config", { id, config });
+      map[id] = JSON.parse(config);
+      return map;
+    }, {});
+  } catch (error) {
+    console.log("error", error);
+  }
+
+  return teams;
+}
+
+function getDayOfWeek() {
+  return new Date().getDay();
+}
+
+export async function processMessage(
+  message,
+  {
+    getTeams = getTeams,
+    postMessage = postMessage,
+    getDayOfWeek = getDayOfWeek,
+  }
+) {
   //  console.log('processMessage', { topic, message });
 
   const { event } = message;
   const { channel, subtype, team, text, type, user } = event;
 
   if (teams === undefined) {
-    try {
-      const db = createDatabaseConnection(process.env.DB_HOST || "localhost");
-
-      console.log("selecting teams");
-      // const db = knex(config);
-      teams = await (
-        await db.from("teams")
-      ).reduce((map, { id, config }) => {
-        console.log("== id, config", { id, config });
-        map[id] = JSON.parse(config);
-        return map;
-      }, {});
-    } catch (error) {
-      console.log("error", error);
-    }
+    teams = getTeams();
+    // try {
+    //   console.log("selecting teams");
+    //   // const db = knex(config);
+    //   teams = await (
+    //     await db.from("teams")
+    //   ).reduce((map, { id, config }) => {
+    //     console.log("== id, config", { id, config });
+    //     map[id] = JSON.parse(config);
+    //     return map;
+    //   }, {});
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
   }
-  console.log({ teams });
+  console.log("teams", { teams });
 
   if (type === "app_mention") {
     console.log({ team, teams });
@@ -124,8 +154,7 @@ export async function processMessage(message) {
           console.log("match found");
 
           if (next.daysOfWeek?.length) {
-            const today = new Date();
-            const dayOfWeek = today.getDay();
+            const dayOfWeek = getDayOfWeek();
             console.log(next.daysOfWeek, { dayOfWeek });
             if (!next.daysOfWeek.includes(dayOfWeek)) {
               continue;
