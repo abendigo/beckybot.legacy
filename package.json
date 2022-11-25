@@ -17,7 +17,8 @@
     "cucumber:dom-http": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile dom_http"
   },
   "engines": {
-    "npm": ">=7.3.0",
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
     "yarn": "please-use-npm"
   },
   "dependencies": {
