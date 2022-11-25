@@ -1,13 +1,13 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import json from '@rollup/plugin-json';
+import commonjs from "@rollup/plugin-commonjs";
+import resolve from "@rollup/plugin-node-resolve";
+import json from "@rollup/plugin-json";
 
 export default {
-  input: 'src/backend.js',
+  input: "src/index.js",
   output: {
-    file: 'bundle.js',
-    format: 'es'
+    file: "bundle.js",
+    format: "es",
   },
-  plugins: [ resolve(), commonjs(), json() ],
-  external: ['knex', 'redis']
-}
+  plugins: [resolve(), commonjs(), json()],
+  external: ["knex", "redis"],
+};
