@@ -3,6 +3,8 @@ import { postMessage } from "../../lib/_api.js";
 import redis from "redis";
 import knex from "knex";
 
+import { createHandler } from "./handler.js";
+
 import { createMessageConsumer } from "./lib/consumer.js";
 // import { createTeamManager } from './lib/teams.js'
 // import { createTriggerManager } from './lib/triggers.js'
@@ -77,21 +79,22 @@ container.register(
   })()
 );
 
-const { subscribe } = getContainer().resolve("pubsub");
+// const { subscribe } = getContainer().resolve("pubsub");
+const handler = createHandler();
 
 // Nodemon sends SIGUSR2 before it restarts.
 process.once("SIGUSR2", function () {
   console.log("shutting down");
-  unsubscribe();
+  handler.close();
 
   process.kill(process.pid, "SIGUSR2");
 });
 
-const unsubscribe = subscribe("EVENTS", function (channel, message) {
-  try {
-    console.log("subscribe", channel);
-    processMessage(message);
-  } catch (error) {
-    console.log("XXXX ERROR XXXX", error);
-  }
-});
+// const unsubscribe = subscribe("EVENTS", function (channel, message) {
+//   try {
+//     console.log("subscribe", channel);
+//     processMessage(message);
+//   } catch (error) {
+//     console.log("XXXX ERROR XXXX", error);
+//   }
+// });

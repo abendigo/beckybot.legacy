@@ -11,7 +11,6 @@ export default {
   ...common,
   worldParameters: {
     tasks: path.join(__dirname, "features/support/tasks/session"),
-    // tasks: "./features/support/tasks/session",
     session: "DomainSession",
   },
 };
@@ -27,7 +26,9 @@ export const http = {
 // Browser DOM
 export const dom = {
   ...common,
-  worldParameters: {},
+  worldParameters: {
+    session: "DomainSession",
+  },
 };
 
 // Browser DOM, Http server
@@ -38,5 +39,9 @@ export const dom_http = {
 
 export const fullstack = {
   ...common,
-  worldParameters: {},
+  worldParameters: {
+    tasks: path.join(__dirname, "features/support/tasks/fullstack"),
+    dataSession: "KnexSession",
+    pubsubSession: "RedisSession",
+  },
 };

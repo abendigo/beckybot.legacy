@@ -12,7 +12,7 @@
   "scripts": {
     "test": "npm run cucumber",
     "cucumber": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js",
-    "cucumber:http": "npm run build --workspace=frontend && NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile http",
+    "cucumber:http": "DB_HOST=localhost REDIS_HOST=localhost npm run build --workspace=frontend && NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile http",
     "cucumber:dom": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile dom",
     "cucumber:dom-http": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile dom_http"
   },

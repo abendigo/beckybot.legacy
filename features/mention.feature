@@ -4,5 +4,5 @@ Feature: Mention
 
   # Scenario: SomeUser mentions BeckyBot
   #   Given BeckyBot has joined a slack channel
-  #   When David mentions BeckyBot
+  #   When David says 'Hello @BeckyBot'
   #   Then BeckyBot should respond with 'Hi <David>'

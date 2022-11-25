@@ -11,6 +11,7 @@ import polka from "polka";
 
 import type { SendChatMessage } from "./tasks/types";
 import { handler } from "../../frontend/build/handler";
+import { createHandler } from "../../backend/src/handler";
 
 import { createContainer, getContainer } from "../../lib/ioc";
 import { processMessage } from "../../backend/src/lib/processMessage";
@@ -23,7 +24,8 @@ defineParameterType({
 
 // Define your own World class that extends from ActorWorld
 export default class BeckysWorld extends ActorWorld {
-  server: Server;
+  frontend: Server;
+  backend: any;
 
   // Tasks
   public sendChatMessage: SendChatMessage;
@@ -52,12 +54,27 @@ Before(async function (this: BeckysWorld) {
       };
     },
   });
-  container.register("pubsub", {
-    publish: (topic, message) => {
-      console.log(">>>> publish", topic, message);
-      processMessage(JSON.parse(message), { getDayOfWeek: () => 5 });
-    },
-  });
+  container.register(
+    "pubsub",
+    (function () {
+      const subscriptions = {};
+      return {
+        publish: (topic, message) => {
+          console.log(">>>> publish", topic, message);
+          subscriptions[topic]?.(topic, JSON.parse(message));
+          // processMessage(JSON.parse(message), { getDayOfWeek: () => 5 });
+        },
+        subscribe: (topic, callback) => {
+          console.log(">>>> subscribe", topic);
+          subscriptions[topic] = callback;
+
+          return () => {
+            delete subscriptions[topic];
+          };
+        },
+      };
+    })()
+  );
   container.register(
     "slack",
     (function () {
@@ -83,12 +100,17 @@ Before(async function (this: BeckysWorld) {
         console.log("running");
       });
 
-    this.server = server;
+    this.frontend = server;
+
+    this.backend = createHandler();
   }
 });
 
 After(async function (this: BeckysWorld) {
-  if (this.server) {
-    this.server.close();
+  if (this.frontend) {
+    this.frontend.close();
+  }
+  if (this.backend) {
+    this.backend.close();
   }
 });
