@@ -7,6 +7,6 @@ const app = polka()
     console.log("running");
   });
 
-setTimeout(() => {
-  app.server.close();
-}, 5000);
+// setTimeout(() => {
+//   app.server.close();
+// }, 5000);

@@ -1,9 +1,10 @@
 import { postMessage } from "../../../lib/_api.js";
 import { createDatabaseConnection } from "../../../lib/db.js";
+import { getContainer } from "../../../lib/ioc.js";
 
 let timestamps = {};
 
-let teams;
+// let teams;
 const triggers = [
   // {regex: { match: '^Happy F(ri|ir)day*', flags: 'i' }, daysOfWeek: [4], timeout: 15 * 60, responses: []},
   {
@@ -49,25 +50,25 @@ const triggers = [
   },
 ];
 
-export async function getTeams() {
-  let teams;
+// export async function getTeams() {
+//   let teams;
 
-  try {
-    console.log("selecting teams");
-    // const db = knex(config);
-    teams = await (
-      await db.from("teams")
-    ).reduce((map, { id, config }) => {
-      console.log("== id, config", { id, config });
-      map[id] = JSON.parse(config);
-      return map;
-    }, {});
-  } catch (error) {
-    console.log("error", error);
-  }
+//   try {
+//     console.log("selecting teams");
+//     // const db = knex(config);
+//     teams = await (
+//       await db.from("teams")
+//     ).reduce((map, { id, config }) => {
+//       console.log("== id, config", { id, config });
+//       map[id] = JSON.parse(config);
+//       return map;
+//     }, {});
+//   } catch (error) {
+//     console.log("error", error);
+//   }
 
-  return teams;
-}
+//   return teams;
+// }
 
 function getDayOfWeek() {
   return new Date().getDay();
@@ -76,32 +77,36 @@ function getDayOfWeek() {
 export async function processMessage(
   message,
   {
-    getTeams = getTeams,
-    postMessage = postMessage,
-    getDayOfWeek = getDayOfWeek,
-  }
+    // getTeams = getTeams,
+    // postMessage = postMessage,
+    getDayOfWeek = () => new Date().getDay(),
+  } = {}
 ) {
-  //  console.log('processMessage', { topic, message });
+  console.log("processMessage", { message });
+
+  const container = getContainer();
+  const { getTeams } = container.resolve("db");
+  const { postMessage } = container.resolve("slack");
 
   const { event } = message;
   const { channel, subtype, team, text, type, user } = event;
 
-  if (teams === undefined) {
-    teams = getTeams();
-    // try {
-    //   console.log("selecting teams");
-    //   // const db = knex(config);
-    //   teams = await (
-    //     await db.from("teams")
-    //   ).reduce((map, { id, config }) => {
-    //     console.log("== id, config", { id, config });
-    //     map[id] = JSON.parse(config);
-    //     return map;
-    //   }, {});
-    // } catch (error) {
-    //   console.log("error", error);
-    // }
-  }
+  // if (teams === undefined) {
+  const teams = await getTeams();
+  // try {
+  //   console.log("selecting teams");
+  //   // const db = knex(config);
+  //   teams = await (
+  //     await db.from("teams")
+  //   ).reduce((map, { id, config }) => {
+  //     console.log("== id, config", { id, config });
+  //     map[id] = JSON.parse(config);
+  //     return map;
+  //   }, {});
+  // } catch (error) {
+  //   console.log("error", error);
+  // }
+  // }
   console.log("teams", { teams });
 
   if (type === "app_mention") {
@@ -113,35 +118,6 @@ export async function processMessage(
   }
 
   if (type === "message") {
-    // if (subtype === 'channel_join') {
-
-    // }
-    // if (subtype === 'channel_leave') {
-
-    // }
-
-    //     if (!event.subtype && happyFriday.test(event.text)) {
-    //       const team = event.team;
-    //       const token = teams[team].access_token;
-
-    //       if (timestamps[team] === undefined) {
-    //         timestamps[team] = { time: 0, next: 0 };
-    //       }
-
-    //       const now = Date.now();
-    //       const dayOfWeek = new Date().getDay();
-    //       console.log({dayOfWeek});
-
-    //       const delay = 15 * 60 * 1000;
-    //       if (dayOfWeek === 5 && timestamps[team].time + delay < now) {
-    //         timestamps[team].time = now;
-    //         await postMessage({ token, channel: event.channel, text: videos[timestamps[team].next] });
-
-    //         timestamps[team].next = (timestamps[team].next + 1) % videos.length;
-    //       } else {
-    //         console.log('==== waiting a while ===');
-    //       }
-    //     }
     if (!subtype) {
       console.log({ text });
       for (let next of triggers) {
@@ -154,6 +130,7 @@ export async function processMessage(
           console.log("match found");
 
           if (next.daysOfWeek?.length) {
+            const today = new Date();
             const dayOfWeek = getDayOfWeek();
             console.log(next.daysOfWeek, { dayOfWeek });
             if (!next.daysOfWeek.includes(dayOfWeek)) {

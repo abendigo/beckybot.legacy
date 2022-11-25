@@ -5,22 +5,22 @@ import type { SendChatMessage } from "../types";
 
 export const sendChatMessage: SendChatMessage = (channel, message) => {
   return (actor: Actor) => {
-    const getTeams = () => {
-      return {
-        T01625HJP6W: { access_token: "token" },
-      };
-    };
+    // const getTeams = () => {
+    //   return {
+    //     T01625HJP6W: { access_token: "token" },
+    //   };
+    // };
 
     const getDayOfWeek = () => {
       return 5;
     };
 
-    const postMessage = (props) => {
-      console.log("POST MESSAGE", this, { actor, props });
-      channel.push(props);
-      // actor.remember("heard", props);
-      // console.log("AFTER", actor);
-    };
+    // const postMessage = (props) => {
+    //   console.log("POST MESSAGE", this, { actor, props });
+    //   channel.push(props);
+    //   // actor.remember("heard", props);
+    //   // console.log("AFTER", actor);
+    // };
 
     processMessage(
       {
@@ -55,7 +55,7 @@ export const sendChatMessage: SendChatMessage = (channel, message) => {
         event_context:
           "4-eyJldCI6Im1lc3NhZ2UiLCJ0aWQiOiJUMDE2MjVISlA2VyIsImFpZCI6IkEwMVJITEdCUU5UIiwiY2lkIjoiQzAxNjBQVDVVOUsifQ",
       },
-      { getTeams, getDayOfWeek, postMessage }
+      { getDayOfWeek }
     );
   };
 };

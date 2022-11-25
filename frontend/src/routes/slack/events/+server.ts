@@ -1,9 +1,12 @@
 import type { RequestHandler } from './$types';
 import { createPublisher } from '../../../../../lib/pubsub';
+import { getContainer } from '../../../../../lib/ioc';
 import { REDIS_HOST } from '$env/static/private';
 
+import { env } from '$env/dynamic/private';
+
 console.log('REDIS_HOST', REDIS_HOST);
-let publisher;
+let publisher: any;
 
 export const POST: RequestHandler = async ({ request }) => {
 	// console.log('event', { event });
@@ -22,7 +25,14 @@ export const POST: RequestHandler = async ({ request }) => {
 	}
 
 	if (type === 'event_callback') {
-		if (!publisher) publisher = createPublisher(REDIS_HOST || 'localhost');
+		const { resolve } = getContainer();
+		const publisher = resolve('pubsub');
+
+		// if (!publisher) publisher = createPublisher(REDIS_HOST || 'localhost');
+		// if (!publisher) publisher = getPubSubClient();
+		// if (!publish) {
+		// 	const { publish } = getPubSubClient();
+		// }
 
 		publisher.publish('EVENTS', JSON.stringify(body));
 	}

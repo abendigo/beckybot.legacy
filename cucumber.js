@@ -19,7 +19,7 @@ export default {
 export const http = {
   ...common,
   worldParameters: {
-    tasks: "features/support/tasks/http",
+    tasks: path.join(__dirname, "features/support/tasks/http"),
     session: "HttpSessionHandler",
   },
 };

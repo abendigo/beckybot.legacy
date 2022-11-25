@@ -12,6 +12,9 @@ import polka from "polka";
 import type { SendChatMessage } from "./tasks/types";
 import { handler } from "../../frontend/build/handler";
 
+import { createContainer, getContainer } from "../../lib/ioc";
+import { processMessage } from "../../backend/src/lib/processMessage";
+
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType({
   ...ActorParameterType,
@@ -35,6 +38,41 @@ setWorldConstructor(BeckysWorld);
 Before(async function (this: BeckysWorld) {
   console.log("Before", this);
   if (this.promise) await this.promise;
+
+  // global.foo = "BAR";
+  // process.env.foo = "BAR";
+  // console.log("env", process.env);
+
+  // getContainer().register("foo");
+  const container = createContainer();
+  container.register("db", {
+    getTeams: () => {
+      return {
+        T01625HJP6W: { access_token: "token" },
+      };
+    },
+  });
+  container.register("pubsub", {
+    publish: (topic, message) => {
+      console.log(">>>> publish", topic, message);
+      processMessage(JSON.parse(message), { getDayOfWeek: () => 5 });
+    },
+  });
+  container.register(
+    "slack",
+    (function () {
+      const history = [];
+      return {
+        getMessages: () => {
+          return history;
+        },
+        postMessage: (message) => {
+          console.log("POST MESSAGE", message);
+          history.push(message);
+        },
+      };
+    })()
+  );
 
   // if (this.parameters.dbSession == )
   // if (this.parameters.slackSession == )
