@@ -6,7 +6,6 @@ export const createHandler = () => {
 
   const unsubscribe = subscribe("EVENTS", function (topic, message) {
     try {
-      console.log("subscribe", topic);
       processMessage(message);
     } catch (error) {
       console.log("XXXX ERROR XXXX", error);
