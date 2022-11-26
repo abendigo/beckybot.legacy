@@ -40,12 +40,24 @@ Given(
   }
 );
 
-Given("today is Friday", function () {
+Given("today is Friday", async function () {
   const container = getContainer();
   const { setDate } = container.resolve("date");
 
   setDate("2022-11-25T12:00");
 });
+
+When(
+  "{actor} mentions @{actor}",
+  async function (
+    this: BeckysWorld,
+    speaker: Actor<BeckysWorld>,
+    target: Actor<BeckysWorld>
+  ) {
+    await speaker.attemptsTo(this.mention(target));
+    // return "pending";
+  }
+);
 
 When(
   "{actor} says {string}",
