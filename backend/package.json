@@ -2,7 +2,7 @@
   "name": "@beckybot/backend",
   "scripts": {
     "dev": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" nodemon src/index.ts",
-    "build": "rollup --config rollup.config.ts --configPlugin typescript"
+    "build": "rollup --config rollup.config.ts --configPlugin typescript2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^18.0.0",
