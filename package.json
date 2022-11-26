@@ -10,6 +10,7 @@
     "frontend"
   ],
   "scripts": {
+    "build": "DB_HOST=localhost REDIS_HOST=localhost npm run build --workspaces --if-present",
     "test": "npm run cucumber",
     "cucumber": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js",
     "cucumber:http": "DB_HOST=localhost REDIS_HOST=localhost npm run build --workspace=frontend && NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile http",
@@ -17,7 +18,8 @@
     "cucumber:dom-http": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" cucumber-js --profile dom_http"
   },
   "engines": {
-    "npm": ">=7.3.0",
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0",
     "yarn": "please-use-npm"
   },
   "dependencies": {

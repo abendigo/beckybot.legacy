@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+/backend/bundle.js
 /frontend/.svelte
 /frontend/build
 /frontend/functions
