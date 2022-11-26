@@ -4,7 +4,7 @@ import { Given, When, Then, Before } from "@cucumber/cucumber";
 import type { Actor } from "@cucumber/screenplay";
 
 import type BeckysWorld from "../world";
-import { getContainer } from "../../../lib/ioc";
+import { getContainer } from "@beckybot/lib/ioc";
 
 Given(
   "{actor} has joined a slack channel",
