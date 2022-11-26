@@ -3,7 +3,7 @@ import knex from "knex";
 
 import { createHandler } from "./handler.js";
 
-import { createContainer } from "../../lib/ioc.js";
+import { createContainer } from "../../lib/ioc";
 import { postMessage } from "../../lib/_api.js";
 
 const container = createContainer();
