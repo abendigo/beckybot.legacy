@@ -11,10 +11,6 @@ export const sendChatMessage: SendChatMessage = (channel, message) => {
     //   };
     // };
 
-    const getDayOfWeek = () => {
-      return 5;
-    };
-
     // const postMessage = (props) => {
     //   console.log("POST MESSAGE", this, { actor, props });
     //   channel.push(props);
@@ -54,8 +50,7 @@ export const sendChatMessage: SendChatMessage = (channel, message) => {
         is_ext_shared_channel: false,
         event_context:
           "4-eyJldCI6Im1lc3NhZ2UiLCJ0aWQiOiJUMDE2MjVISlA2VyIsImFpZCI6IkEwMVJITEdCUU5UIiwiY2lkIjoiQzAxNjBQVDVVOUsifQ",
-      },
-      { getDayOfWeek }
+      }
     );
   };
 };

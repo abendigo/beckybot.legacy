@@ -19,7 +19,12 @@ Given(
   }
 );
 
-Given("today is Friday", function () {});
+Given("today is Friday", function () {
+  const container = getContainer();
+  const { setDate } = container.resolve("date");
+
+  setDate("2022-11-25T12:00");
+});
 
 let channel = [];
 Before(() => {
