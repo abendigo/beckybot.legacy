@@ -1,13 +1,18 @@
+import { strict as assert } from "node:assert";
+
 import { Given, When, Then } from "@cucumber/cucumber";
 import type { Actor } from "@cucumber/screenplay";
+
+import { getContainer } from "@beckybot/lib/ioc";
+import type { DataHandler } from "@beckybot/lib/db";
+
 import type BeckysWorld from "../world";
-import { strict as assert } from "node:assert";
-import { getContainer } from "../../../lib/ioc";
+import type { MockDateHandler } from "../mocks/date";
+import type { MockSlackHandler } from "../mocks/slack";
 
-
-Given('the response is {string}', function (string) {
+Given("the response is {string}", function (string) {
   const container = getContainer();
-  const { addTrigger } = container.resolve("db");
+  const { addTrigger } = container.resolve<DataHandler>("db");
 
   addTrigger({
     trigger: { match: "test trigger", flags: "i" },
@@ -18,26 +23,30 @@ Given('the response is {string}', function (string) {
   });
 });
 
-
-Given('today is Monday', function () {
+Given("today is Monday", function () {
   const container = getContainer();
-  const { setDate } = container.resolve("date");
+  const { setDate } = container.resolve<MockDateHandler>("date");
 
   setDate("2022-11-28T12:00");
 });
 
+When(
+  "{actor} triggers the response",
+  async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
+    await actor.attemptsTo(this.sendChatMessage([], "test trigger"));
+  }
+);
 
-When('{actor} triggers the response', async function (
-  this: BeckysWorld,
-  actor: Actor<BeckysWorld>
-) {
-  await actor.attemptsTo(this.sendChatMessage([], "test trigger"));
-});
+Then(
+  "{actor} should respond with {string}",
+  async function (
+    this: BeckysWorld,
+    actor: Actor<BeckysWorld>,
+    message: string
+  ) {
+    const container = getContainer();
+    const { getMessages } = container.resolve<MockSlackHandler>("slack");
 
-
-Then('{actor} should respond with {string}', async function (this: BeckysWorld, actor: Actor<BeckysWorld>, message: string) {
-  const container = getContainer();
-  const { getMessages } = container.resolve("slack");
-
-  assert.equal(getMessages()[0]?.text, message);
-});
+    assert.equal(getMessages()[0]?.text, message);
+  }
+);
