@@ -1,10 +1,10 @@
 import redis from "redis";
 import knex from "knex";
 
-import { createHandler } from "./handler.js";
+import { createHandler } from "./handler";
 
 import { createContainer } from "../../lib/ioc";
-import { postMessage } from "../../lib/_api.js";
+import { postMessage } from "../../lib/_api";
 
 const container = createContainer();
 container.register("date", {
