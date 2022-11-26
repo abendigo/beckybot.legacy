@@ -1,4 +1,6 @@
-export const createMock = () => {
+import type { PubSubHandler } from "lib/pubsub";
+
+export function createMock(): PubSubHandler {
   const subscriptions = {};
 
   return {
@@ -13,4 +15,4 @@ export const createMock = () => {
       };
     },
   };
-};
+}

@@ -1,10 +1,15 @@
-import { getContainer } from "../../../lib/ioc.js";
+import { getContainer } from "@beckybot/lib/ioc";
+
+import type { DataHandler } from "@beckybot/lib/db";
+import type { DateHandler } from "@beckybot/lib/date";
+import type { SlackHandler } from "@beckybot/lib/slack";
 
 export async function processMessage(message) {
-  const container = getContainer();
-  const { getTeams, getTriggers } = container.resolve("db");
-  const { postMessage } = container.resolve("slack");
-  const { now } = container.resolve("date");
+  const { resolve } = getContainer();
+
+  const { getTeams, getTriggers } = resolve<DataHandler>("db");
+  const { postMessage } = resolve<SlackHandler>("slack");
+  const { now } = resolve<DateHandler>("date");
 
   const { event } = message;
   const { channel, subtype, team, text, type, user } = event;

@@ -5,8 +5,8 @@ interface Dependencies {
 }
 
 interface DependencyContainer {
-  register: (key: string, value: any) => void;
-  resolve: (key: string) => any;
+  register: (key: string, handler: any) => void;
+  resolve: <T>(key: string) => T;
 }
 
 declare global {
@@ -18,10 +18,10 @@ export function createContainer(xxx: Dependencies = {}) {
     const dependencies: Dependencies = xxx;
 
     return {
-      register: function (key: string, value: any) {
-        dependencies[key] = value;
+      register: function (key, handler) {
+        dependencies[key] = handler;
       },
-      resolve: function (key: string) {
+      resolve: function (key) {
         return dependencies[key];
       },
     };

@@ -1,7 +1,7 @@
 // import { request } from "https";
 import { stringify } from "querystring";
 
-export async function postMessage({ token, channel, text }) {
+async function postMessage({ token, channel, text }) {
   console.log("postMessage", { token, channel, text });
 
   const data = JSON.stringify({
@@ -63,7 +63,7 @@ export async function postMessage({ token, channel, text }) {
 */
 }
 
-export async function getAccessToken({ code, _client_id, _client_secret }) {
+async function getAccessToken({ code, _client_id, _client_secret }) {
   // const data = JSON.stringify({
   //   code,
   //   // client_id,
@@ -137,6 +137,18 @@ export async function getAccessToken({ code, _client_id, _client_secret }) {
   req.write(data);
   req.end();
   */
+}
+
+export interface SlackHandler {
+  getAccessToken: (options) => Promise<void>;
+  postMessage: (options) => Promise<void>;
+}
+
+export function createSlackHandler(): SlackHandler {
+  return {
+    getAccessToken,
+    postMessage,
+  };
 }
 
 /*

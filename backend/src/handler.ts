@@ -1,8 +1,10 @@
-import { processMessage } from "./lib/processMessage.js";
-import { getContainer } from "../../lib/ioc";
+import { getContainer } from "@beckybot/lib/ioc";
+import type { PubSubHandler } from "@beckybot/lib/pubsub";
+
+import { processMessage } from "./lib/processMessage";
 
 export const createHandler = () => {
-  const { subscribe } = getContainer().resolve("pubsub");
+  const { subscribe } = getContainer().resolve<PubSubHandler>("pubsub");
 
   const unsubscribe = subscribe("EVENTS", function (topic, message) {
     try {

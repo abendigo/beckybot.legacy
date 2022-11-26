@@ -1,16 +1,20 @@
 import { strict as assert } from "node:assert";
 
-import { Given, When, Then, Before } from "@cucumber/cucumber";
+import { Given, When, Then } from "@cucumber/cucumber";
 import type { Actor } from "@cucumber/screenplay";
 
-import type BeckysWorld from "../world";
 import { getContainer } from "@beckybot/lib/ioc";
+import type { DataHandler } from "@beckybot/lib/db";
+
+import type BeckysWorld from "../world";
+import type { MockDateHandler } from "../mocks/date";
+import type { MockSlackHandler } from "../mocks/slack";
 
 Given(
   "{actor} has joined a slack channel",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const container = getContainer();
-    const { addTrigger } = container.resolve("db");
+    const { addTrigger } = container.resolve<DataHandler>("db");
 
     addTrigger({
       trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },
@@ -42,7 +46,7 @@ Given(
 
 Given("today is Friday", async function () {
   const container = getContainer();
-  const { setDate } = container.resolve("date");
+  const { setDate } = container.resolve<MockDateHandler>("date");
 
   setDate("2022-11-25T12:00");
 });
@@ -55,7 +59,6 @@ When(
     target: Actor<BeckysWorld>
   ) {
     await speaker.attemptsTo(this.mention(target));
-    // return "pending";
   }
 );
 
@@ -74,10 +77,9 @@ Then(
   "{actor} should respond with a YouTube link",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const container = getContainer();
-    const { getMessages } = container.resolve("slack");
+    const { getMessages } = container.resolve<MockSlackHandler>("slack");
 
     assert.match(getMessages()[0]?.text, /www\.youtube\.com/);
-    // assert.match(channel[0]?.text, /www\.youtube\.com/);
   }
 );
 
@@ -85,9 +87,8 @@ Then(
   "{actor} should respond with a GIF",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const container = getContainer();
-    const { getMessages } = container.resolve("slack");
+    const { getMessages } = container.resolve<MockSlackHandler>("slack");
 
     assert.match(getMessages()[0]?.text, /\.gif/);
-    // assert.match(channel[0]?.text, /\.gif/);
   }
 );
