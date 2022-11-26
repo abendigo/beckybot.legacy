@@ -1,5 +1,5 @@
 import { processMessage } from "./lib/processMessage.js";
-import { getContainer } from "../../lib/ioc.js";
+import { getContainer } from "../../lib/ioc";
 
 export const createHandler = () => {
   const { subscribe } = getContainer().resolve("pubsub");

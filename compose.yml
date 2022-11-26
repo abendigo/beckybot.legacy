@@ -1,16 +1,13 @@
 services:
   db:
     image: mysql/mysql-server
-    # command: --default-authentication-plugin=mysql_native_password
     command: --authentication-policy=mysql_native_password
     environment:
-      # - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_ROOT_HOST=%
       - MYSQL_USER=beckybot
       - MYSQL_DATABASE=beckybot
       - MYSQL_PASSWORD=FooBarIsDead
     volumes:
-      # - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - beckybot-data:/var/lib/mysql
     networks:
       - backend
@@ -34,40 +31,15 @@ services:
   db-init:
     image: node:18-alpine
     working_dir: /src
-    # command: node ./init.js
-    command: sh -c './wait-for.sh db:3306 -t 60 -- node ./db/init.js'
+    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./db-init/init.js'
+    environment:
+      - DB_HOST=db
     networks:
       - backend
     volumes:
       - ./:/src
 
-  # beckybot:
-  #   image: node:18-alpine
-  #   command: npm run dev --workspace=frontend -- --host
-  #   environment:
-  #     - SLACK_CLIENT_SECRET
-  #   ports:
-  #     - 5173:5173
-  #   networks:
-  #     - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
-
-  # backend:
-  #   image: node:18-alpine
-  #   command: sh -c './wait-for.sh db:3306 -- npm run dev --workspace=backend'
-  #   networks:
-  #     - backend
-  #   working_dir: /usr/src/app
-  #   volumes:
-  #     - ./:/usr/src/app
-
 networks:
-  # traefik:
-  #   external: true
-  # mysql_backend:
-  #   external: true
   backend:
 
 volumes:

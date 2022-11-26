@@ -1,6 +1,6 @@
 import knex from "knex";
 
-export function createDatabaseConnection(hostname) {
+export function createDatabaseConnection(hostname: string) {
   return knex({
     client: "mysql",
     connection: {

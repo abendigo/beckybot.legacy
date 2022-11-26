@@ -1,6 +1,6 @@
 import type { Actor } from "@cucumber/screenplay";
 import type { SendChatMessage } from "../types";
-import { processMessage } from "../../../../backend/src/lib/processMessage";
+import { processMessage } from "@beckybot/backend/src/lib/processMessage";
 
 export const sendChatMessage: SendChatMessage = (channel, message) => {
   return (actor: Actor) => {

@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "module": "esnext",
+    "target": "esnext"
+  },
+  "exclude": ["../node_modules/**", "./[!ambient.d.ts]**"]
+}

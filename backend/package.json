@@ -1,20 +1,18 @@
 {
   "name": "@beckybot/backend",
-  "version": "0.0.1",
   "scripts": {
-    "dev": "NODE_OPTIONS=\"--experimental-specifier-resolution=node\" nodemon src/index.js",
-    "build": "rollup -c",
-    "test": "cucumber-js --esm",
-    "ci": "cucumber-js --esm --publish"
+    "dev": "NODE_OPTIONS=\"--loader ts-node/esm --experimental-specifier-resolution=node\" nodemon src/index.ts",
+    "build": "rollup --config rollup.config.ts --configPlugin typescript2"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "7.2.0",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "esbuild": "^0.11.7",
     "nodemon": "^2.0.7",
-    "rollup": "^2.44.0"
+    "rollup": "^2.44.0",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "knex": "^0.95.4",

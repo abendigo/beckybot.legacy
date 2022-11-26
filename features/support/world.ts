@@ -4,6 +4,7 @@ import {
   Before,
   After,
 } from "@cucumber/cucumber";
+import { createContainer } from "@beckybot/lib/ioc";
 import { ActorWorld, ActorParameterType } from "@cucumber/screenplay";
 import type { IActorWorldOptions } from "@cucumber/screenplay";
 import type { Server } from "http";
@@ -15,9 +16,8 @@ import { createMock as createPubSubMock } from "./mocks/pubsub";
 import { createMock as createSlackMock } from "./mocks/slack";
 
 import type { Mention, SendChatMessage } from "./tasks/types";
-import { createHandler } from "../../backend/src/handler";
-import { handler } from "../../frontend/build/handler";
-import { createContainer } from "../../lib/ioc";
+import { createHandler } from "@beckybot/backend/src/handler";
+import { handler } from "@beckybot/frontend/build/handler";
 
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType({
