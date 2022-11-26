@@ -14,7 +14,7 @@ import { createMock as createDBMock } from "./mocks/db";
 import { createMock as createPubSubMock } from "./mocks/pubsub";
 import { createMock as createSlackMock } from "./mocks/slack";
 
-import type { SendChatMessage } from "./tasks/types";
+import type { Mention, SendChatMessage } from "./tasks/types";
 import { createHandler } from "../../backend/src/handler";
 import { handler } from "../../frontend/build/handler";
 import { createContainer } from "../../lib/ioc";
@@ -22,7 +22,7 @@ import { createContainer } from "../../lib/ioc";
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType({
   ...ActorParameterType,
-  regexp: /BeckyBot|ChannelUser|A-Z][a-z]+/,
+  regexp: /BeckyBot|ChannelUser|[A-Z][a-z]+/,
 });
 
 // Define your own World class that extends from ActorWorld
@@ -31,6 +31,7 @@ export default class BeckysWorld extends ActorWorld {
   backend: any;
 
   // Tasks
+  public mention: Mention;
   public sendChatMessage: SendChatMessage;
 
   constructor(props: IActorWorldOptions) {

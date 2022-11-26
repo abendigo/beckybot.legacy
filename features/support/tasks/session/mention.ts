@@ -1,13 +1,12 @@
 import type { Actor } from "@cucumber/screenplay";
-import type { SendChatMessage } from "../types";
+import type { Mention } from "../types";
 import { processMessage } from "../../../../backend/src/lib/processMessage";
 
-export const sendChatMessage: SendChatMessage = (channel, message) => {
+export const mention: Mention = () => {
   return (actor: Actor) => {
     processMessage({
       event: {
-        type: "message",
-        text: message,
+        type: "app_mention",
         user: actor.name,
         team: "T01625HJP6W",
       },
