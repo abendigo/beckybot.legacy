@@ -65,7 +65,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/abendigo/beckybot/db
+            ghcr.io/abendigo/beckybot/db-init
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -76,5 +76,5 @@ jobs:
         with:
           file: Dockerfile.db-init
           push: true
-          tags: ${{ steps.db.outputs.tags }}
-          labels: ${{ steps.db.outputs.labels }}
+          tags: ${{ steps.db-init.outputs.tags }}
+          labels: ${{ steps.db-init.outputs.labels }}
