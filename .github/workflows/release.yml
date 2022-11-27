@@ -2,8 +2,8 @@ name: Release backend, frontend, and db-init
 
 on:
   push:
-    # tags:
-    #   - "v*"
+    tags:
+      - "v*"
 
 jobs:
   push_to_registry:
