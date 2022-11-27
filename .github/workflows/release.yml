@@ -2,8 +2,8 @@ name: Release backend, frontend, and db-init
 
 on:
   push:
-    tags:
-      - "v*"
+    # tags:
+    #   - "v*"
 
 jobs:
   push_to_registry:
@@ -64,8 +64,8 @@ jobs:
         id: db-init
         uses: docker/metadata-action@v4
         with:
-          images: |
-            ghcr.io/abendigo/beckybot/db-init
+          # images: |
+          #   ghcr.io/abendigo/beckybot/db-init
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
