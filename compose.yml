@@ -34,7 +34,7 @@ services:
     networks:
       - backend
 
-  beckybot:
+  beckybot-staging:
     image: ghcr.io/abendigo/beckybot/frontend:0.1.7
     restart: unless-stopped
     environment:
