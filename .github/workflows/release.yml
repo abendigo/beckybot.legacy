@@ -61,11 +61,11 @@ jobs:
           labels: ${{ steps.frontend.outputs.labels }}
 
       - name: Extract metadata (tags, labels) for Docker (db-init)
-        id: db
+        id: db-init
         uses: docker/metadata-action@v4
         with:
           images: |
-            ghcr.io/abendigo/beckybot/db
+            ghcr.io/abendigo/beckybot/db-init
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -74,7 +74,7 @@ jobs:
       - name: Build and Push (db-init)
         uses: docker/build-push-action@v3
         with:
-          file: Dockerfile.db
+          file: Dockerfile.db-init
           push: true
           tags: ${{ steps.db.outputs.tags }}
           labels: ${{ steps.db.outputs.labels }}
