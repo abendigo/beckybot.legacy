@@ -28,7 +28,9 @@ services:
 
   db-init:
     image: ghcr.io/abendigo/beckybot/db-init:0.1.14
-    command: sh -c './wait-for.sh db:3306 -t 0 -- node ./init.js'
+    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./init.js'
+    environment:
+      - DB_HOST=db
     depends_on:
       - db
     networks:
