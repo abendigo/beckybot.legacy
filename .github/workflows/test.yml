@@ -1,7 +1,6 @@
 name: Build and Test
 
-on:
-  push: [branch]
+on: [push]
 
 jobs:
   build_and_test:
