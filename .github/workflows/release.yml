@@ -64,8 +64,8 @@ jobs:
         id: db-init
         uses: docker/metadata-action@v4
         with:
-          # images: |
-          #   ghcr.io/abendigo/beckybot/db-init
+          images: |
+            ghcr.io/abendigo/beckybot/db
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
