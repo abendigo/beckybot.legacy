@@ -27,17 +27,15 @@ services:
   #     - backend
 
   db-init:
-    image: ghcr.io/abendigo/beckybot/db-init:0.1.15
+    image: ghcr.io/abendigo/beckybot/db-init:0.1.16
     command: sh -c './wait-for.sh db:3306 -t 240 -- node ./db-init/init.js'
-    environment:
-      - DB_HOST=db
     depends_on:
       - db
     networks:
       - backend
 
   beckybot-staging:
-    image: ghcr.io/abendigo/beckybot/frontend:0.1.15
+    image: ghcr.io/abendigo/beckybot/frontend:0.1.16
     restart: unless-stopped
     environment:
       - SLACK_CLIENT_SECRET
@@ -49,7 +47,7 @@ services:
       - backend
 
   backend:
-    image: ghcr.io/abendigo/beckybot/backend:0.1.15
+    image: ghcr.io/abendigo/beckybot/backend:0.1.16
     restart: unless-stopped
     depends_on:
       - db
