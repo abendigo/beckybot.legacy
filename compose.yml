@@ -31,7 +31,7 @@ services:
   db-init:
     image: node:18-alpine
     working_dir: /src
-    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./db-init/init.js'
+    command: sh -c './wait-for.sh db:3306 -t 240 -- npx knex --knexfile db-init/knexfile.js migrate:latest'
     networks:
       - backend
     volumes:

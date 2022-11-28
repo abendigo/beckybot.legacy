@@ -1,6 +1,5 @@
 {
   "name": "db-init",
-  "type": "module",
-  "dependencies": {},
-  "devDependencies": {}
+  "xtype": "commonjs",
+  "type": "module"
 }
