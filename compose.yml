@@ -28,7 +28,7 @@ services:
 
   db-init:
     image: ghcr.io/abendigo/beckybot/db-init:0.1.17
-    command: sh -c './wait-for.sh db:3306 -t 240 -- node ./db-init/init.js'
+    command: sh -c './wait-for.sh db:3306 -t 240 -- npx knex --knexfile db-init/knexfile.js migrate:latest'
     depends_on:
       - db
     networks:
