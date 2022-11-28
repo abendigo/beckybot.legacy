@@ -32,8 +32,6 @@ services:
     image: node:18-alpine
     working_dir: /src
     command: sh -c './wait-for.sh db:3306 -t 240 -- node ./db-init/init.js'
-    environment:
-      - DB_HOST=db
     networks:
       - backend
     volumes:
