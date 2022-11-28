@@ -10,5 +10,5 @@ const db = knex({
     database: "beckybot",
   },
 });
-await db.migrate.latest({ directory: "./migrations" });
+await db.migrate.latest({ directory: "./db-init/migrations" });
 db.destroy();
