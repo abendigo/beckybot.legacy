@@ -1,4 +1,5 @@
 import { getContainer } from '@beckybot/lib/ioc';
+import type { DataHandler } from '@beckybot/lib/db';
 import type { SlackHandler } from '@beckybot/lib/slack';
 
 import type { RequestHandler } from './$types';
@@ -12,6 +13,7 @@ const client_id = '2774084983.1867696398775';
 export const GET: RequestHandler = async ({ url }) => {
 	const container = getContainer();
 	const { getAccessToken } = container.resolve<SlackHandler>('slack');
+	const { addTeam } = container.resolve<DataHandler>('db');
 	// console.log('oauth.get', request);
 	// console.log('oauth.get', request.query);
 	// const code = request.query.get('code');
@@ -25,6 +27,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	console.log('============================================');
 
 	if (json.ok) {
+		await addTeam({ id: json.team.id, config: JSON.stringify(json) });
 		// if (!db) db = createDatabaseConnection(DB_HOST);
 		// const xxx = await db('teams').insert({ id: json.team.id, config: JSON.stringify(json) });
 		// console.log({ xxx });

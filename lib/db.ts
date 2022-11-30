@@ -2,6 +2,7 @@ import knex from "knex";
 
 export interface DataHandler {
   getTeams: () => Promise<any>;
+  addTeam: (team: any) => Promise<any>;
   getTriggers: () => Promise<any>;
   addTrigger: (trigger: any) => Promise<void>;
 }
@@ -26,6 +27,7 @@ export function createDataHandler(host: string = "localhost"): DataHandler {
       }, {});
       return teams;
     },
+    addTeam: async (team) => {},
     getTriggers: async () => [
       {
         trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },

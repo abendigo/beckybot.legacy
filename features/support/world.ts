@@ -20,10 +20,11 @@ import { createContainer } from "@beckybot/lib/ioc";
 
 import { createMock as createDateMock } from "./mocks/date";
 import { createMock as createDBMock } from "./mocks/db";
+import { createMock as createEnvMock } from "./mocks/env";
 import { createMock as createPubSubMock } from "./mocks/pubsub";
 import { createMock as createSlackMock } from "./mocks/slack";
 
-import type { Mention, SendChatMessage } from "./tasks/types";
+import type { Mention, SendChatMessage, VisitHtmlPage } from "./tasks/types";
 
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType({
@@ -39,6 +40,7 @@ export default class BeckysWorld extends ActorWorld {
   // Tasks
   public mention: Mention;
   public sendChatMessage: SendChatMessage;
+  public visit: VisitHtmlPage;
 
   constructor(props: IActorWorldOptions) {
     super({ ...props, packageType: "module" });
@@ -50,6 +52,8 @@ Before(async function (this: BeckysWorld) {
   if (this.promise) await this.promise;
 
   const container = createContainer({
+    env: createEnvMock(),
+
     date: createDateMock(),
     db: createDBMock(),
     pubsub: createPubSubMock(),
