@@ -1,74 +1,38 @@
-console.log('>>>> hooks.server.ts');
-
-import { createContainer, getContainer } from '../../lib/ioc';
-
 import type { Handle } from '@sveltejs/kit';
-import knex from 'knex';
-import redis from 'redis';
-import { DB_HOST, REDIS_HOST } from '$env/static/private';
+// import { DB_HOST, REDIS_HOST } from '$env/static/private';
+
+import { createContainer, getContainer } from '@beckybot/lib/ioc';
+import { createDataHandler } from '@beckybot/lib/db';
+import { createDynamicEnvHandler, type DynamicEnvHandler } from '@beckybot/lib/env';
+import { createPubSubHandler } from '@beckybot/lib/pubsub';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('>>>> hooks.server.ts:handle', event.url.pathname);
+	console.log('>>>> hook.server.ts:handle', event.url.pathname);
 
 	if (!getContainer()) {
-		const container = createContainer();
-		container.register(
-			'db',
-			(function () {
-				const db = knex({
-					client: 'mysql',
-					connection: {
-						// host: 'localhost',
-						host: DB_HOST || 'localhost',
-						user: 'beckybot',
-						password: 'FooBarIsDead',
-						database: 'beckybot'
-					}
-				});
+		createContainer({
+			env: createDynamicEnvHandler(process.env),
 
-				return {
-					getTeams: async () => {
-						console.log('db::getTeams');
-						const teams = (await db.from('teams')).reduce((map, { id, config }) => {
-							map[id] = JSON.parse(config);
-							return map;
-						}, {});
-						return teams;
-					}
-				};
-			})()
-		);
-		container.register(
-			'pubsub',
-			(function () {
-				const client = redis.createClient({ url: `redis://${REDIS_HOST || 'localhost'}:6379` });
-
-				return {
-					publish: (topic: string, message: string) => {
-						client.publish(topic, message);
-					}
-					// subscribe: (topic, callback) => {
-					// 	client.on('message', function (topic, message) {
-					// 		callback(topic, JSON.parse(message));
-					// 	});
-					// 	client.subscribe(topic);
-
-					// 	return () => {
-					// 		console.log('unsubscribe', topic);
-					// 		client.unsubscribe(topic);
-					// 		client.quit();
-					// 	};
-					// }
-				};
-			})()
-		);
+			// date: createDateHandler(),
+			db: createDataHandler(process.env.DB_HOST),
+			pubsub: createPubSubHandler(process.env.REDIS_HOST)
+		});
+		// SlackHandler requires DynamicEnvHandler
+		// .register("slack", createSlackHandler(
+		//   slackClientId, slackClientSecret
+		// ))
 	}
-	// if (event.url.pathname.startsWith('/custom')) {
-	//   return new Response('custom response');
-	// }
 
-	// const response = await resolve(event);
-	// return response;
+	if (event.url.pathname !== '/setup') {
+		const { get } = getContainer().resolve<DynamicEnvHandler>('env');
+
+		const slackClientID = get('SLACK_CLIENT_ID');
+		const slackClientSecret = get('SLACK_CLIENT_SECRET');
+		console.log('>>>> SLACK_CLIENT_ID:', slackClientID, 'SLACK_CLIENT_SECRET', slackClientSecret);
+
+		if (!slackClientID || !slackClientSecret)
+			return Response.redirect(`${event.url.origin}/setup`, 303);
+	}
 
 	return resolve(event);
 };

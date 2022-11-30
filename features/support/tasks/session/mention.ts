@@ -1,6 +1,6 @@
 import type { Actor } from "@cucumber/screenplay";
-import type { Mention } from "../types";
 import { processMessage } from "@beckybot/backend/src/lib/processMessage";
+import type { Mention } from "../types";
 
 export const mention: Mention = () => {
   return (actor: Actor) => {

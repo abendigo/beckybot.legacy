@@ -1,5 +1,6 @@
 import type { RequestHandler } from './$types';
-import { getContainer } from '../../../../../lib/ioc';
+import { getContainer } from '@beckybot/lib/ioc';
+import type { PubSubHandler } from '@beckybot/lib/pubsub';
 
 export const POST: RequestHandler = async ({ request }) => {
 	const body = await request.json();
@@ -12,7 +13,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	if (type === 'event_callback') {
 		const { resolve } = getContainer();
-		const { publish } = resolve('pubsub');
+		const { publish } = resolve<PubSubHandler>('pubsub');
 
 		publish('EVENTS', JSON.stringify(body));
 	}

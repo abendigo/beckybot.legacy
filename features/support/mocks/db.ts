@@ -8,6 +8,9 @@ export function createMock(): DataHandler {
 
   return {
     getTeams: async () => teams,
+    addTeam: async ({ id, config }) => {
+      teams[id] = config;
+    },
     getTriggers: async () => triggers,
     addTrigger: async (trigger: any) => {
       triggers.push(trigger);

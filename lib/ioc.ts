@@ -1,5 +1,10 @@
 // Dead simple Dependency Injection.
 
+// TODO:
+// pass in init function. Only call during the resolve step,
+// and only if it has never been resolved before.
+// This will sokve the issue of nested dependencies
+
 interface Dependencies {
   [key: string]: any;
 }
