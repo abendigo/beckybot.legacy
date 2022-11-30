@@ -1,3 +1,5 @@
+[![Build and Test](https://github.com/abendigo/beckybot/actions/workflows/test.yml/badge.svg)](https://github.com/abendigo/beckybot/actions/workflows/test.yml)
+
 ## To get started
 
     npm install
