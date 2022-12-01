@@ -17,9 +17,26 @@ export const visit: VisitHtmlPage = (url) => {
       event: RequestEvent,
       opts?: ResolveOptions
     ) => MaybePromise<Response> = (event, opts) => {
-      return new Response(`Page Visited: ${event.url}`);
+      return new Response(
+        `Page Visited: ${event.url.pathname}${
+          event.url.pathname.endsWith("/") ? "" : "/"
+        }+page.svelte`
+      );
     };
-    const response = await handle({ event, resolve });
+
+    let response = await handle({ event, resolve });
+
+    if (response.status === 303) {
+      const path = response.headers.get("location");
+
+      response = await handle({
+        event: {
+          url: new URL(path),
+        } as RequestEvent,
+        resolve,
+      });
+    }
+
     return response;
   };
 };

@@ -24,7 +24,12 @@ import { createMock as createEnvMock } from "./mocks/env";
 import { createMock as createPubSubMock } from "./mocks/pubsub";
 import { createMock as createSlackMock } from "./mocks/slack";
 
-import type { Mention, SendChatMessage, VisitHtmlPage } from "./tasks/types";
+import type {
+  Mention,
+  SendChatMessage,
+  VisitHtmlPage,
+  WhichPageIsThis,
+} from "./tasks/types";
 
 // Define an {actor} parameter type that creates Actor objects
 defineParameterType({
@@ -41,6 +46,9 @@ export default class BeckysWorld extends ActorWorld {
   public mention: Mention;
   public sendChatMessage: SendChatMessage;
   public visit: VisitHtmlPage;
+
+  // Questions
+  public whichPageIsThis: WhichPageIsThis;
 
   constructor(props: IActorWorldOptions) {
     super({ ...props, packageType: "module" });
@@ -63,7 +71,12 @@ Before(async function (this: BeckysWorld) {
   // if (this.parameters.dbSession == )
   // if (this.parameters.slackSession == )
   if (this.parameters.session === "HttpSessionHandler") {
+    function logger(req, res, next) {
+      console.log(`~> Received ${req.method} on ${req.url}`);
+      next(); // move on
+    }
     const { server } = polka()
+      .use(logger)
       .use(handler)
       .listen(3001, () => {
         console.log("running");
