@@ -36,14 +36,12 @@ When(
 
 Then(
   "{actor} should see some setup instructions",
-  function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
+  async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const response = actor.recall<Response>("visited");
+    const visited = await actor.ask(this.whichPageIsThis(response));
 
-    assert.equal(response.status, 303);
-    assert.equal(
-      response.headers.get("location"),
-      "http://localhost:3001/setup"
-    );
+    assert.equal(response.status, 200);
+    assert.equal(visited, "/setup/");
   }
 );
 
@@ -51,8 +49,9 @@ Then(
   "{actor} should see the home page",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const response = actor.recall<Response>("visited");
+    const visited = await actor.ask(this.whichPageIsThis(response));
 
     assert.equal(response.status, 200);
-    assert.equal(await response.text(), "Page Visited: http://localhost:3001/");
+    assert.equal(visited, "/");
   }
 );
