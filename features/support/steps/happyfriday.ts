@@ -9,12 +9,17 @@ import type { DataHandler } from "@beckybot/lib/db";
 import type BeckysWorld from "../world";
 import type { MockDateHandler } from "../mocks/date";
 import type { MockSlackHandler } from "../mocks/slack";
+import type { MockEnvHandler } from "../mocks/env";
 
 Given(
   "{actor} has joined a slack channel",
   async function (this: BeckysWorld, actor: Actor<BeckysWorld>) {
     const container = getContainer();
     const { addTrigger } = container.resolve<DataHandler>("db");
+    const { set } = getContainer().resolve<MockEnvHandler>("env");
+
+    set("SLACK_CLIENT_ID", "i'm a client");
+    set("SLACK_CLIENT_SECRET", "it's a secret");
 
     addTrigger({
       trigger: { match: "^Happy F(ri|ir|ry)day*", flags: "i" },

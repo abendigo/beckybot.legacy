@@ -1,16 +1,15 @@
 // Dead simple Dependency Injection.
 
-// TODO:
-// pass in init function. Only call during the resolve step,
-// and only if it has never been resolved before.
-// This will sokve the issue of nested dependencies
+interface Factory {
+  (): any;
+}
 
 interface Dependencies {
-  [key: string]: any;
+  [key: string]: { factory: Factory; handler?: any };
 }
 
 interface DependencyContainer {
-  register: (key: string, handler: any) => void;
+  // register: (key: string, factory: () => any) => void;
   resolve: <T>(key: string) => T;
 }
 
@@ -18,16 +17,23 @@ declare global {
   var container: DependencyContainer;
 }
 
-export function createContainer(xxx: Dependencies = {}) {
+export function createContainer(factories: { [key: string]: Factory } = {}) {
   global.container = (function create(): DependencyContainer {
-    const dependencies: Dependencies = xxx;
+    const dependencies: Dependencies = Object.fromEntries(
+      Object.entries(factories).map(([key, factory]) => [
+        key,
+        { factory: factory },
+      ])
+    );
 
     return {
-      register: function (key, handler) {
-        dependencies[key] = handler;
-      },
+      // register: function (key, handler) {
+      //   dependencies[key] = handler;
+      // },
       resolve: function (key) {
-        return dependencies[key];
+        if (!dependencies[key].handler)
+          dependencies[key].handler = dependencies[key].factory();
+        return dependencies[key].handler;
       },
     };
   })();
