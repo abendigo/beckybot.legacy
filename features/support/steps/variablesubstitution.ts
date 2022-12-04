@@ -9,10 +9,15 @@ import type { DataHandler } from "@beckybot/lib/db";
 import type BeckysWorld from "../world";
 import type { MockDateHandler } from "../mocks/date";
 import type { MockSlackHandler } from "../mocks/slack";
+import type { MockEnvHandler } from "../mocks/env";
 
 Given("the response is {string}", function (string) {
   const container = getContainer();
   const { addTrigger } = container.resolve<DataHandler>("db");
+  const { set } = getContainer().resolve<MockEnvHandler>("env");
+
+  set("SLACK_CLIENT_ID", "i'm a client");
+  set("SLACK_CLIENT_SECRET", "it's a secret");
 
   addTrigger({
     trigger: { match: "test trigger", flags: "i" },

@@ -11,11 +11,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (!getContainer()) {
 		createContainer({
-			env: createDynamicEnvHandler(process.env),
+			env: () => createDynamicEnvHandler(process.env),
 
 			// date: createDateHandler(),
-			db: createDataHandler(process.env.DB_HOST),
-			pubsub: createPubSubHandler(process.env.REDIS_HOST)
+			db: () => createDataHandler(process.env.DB_HOST),
+			pubsub: () => createPubSubHandler(process.env.REDIS_HOST)
 		});
 		// SlackHandler requires DynamicEnvHandler
 		// .register("slack", createSlackHandler(
@@ -30,8 +30,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const slackClientSecret = get('SLACK_CLIENT_SECRET');
 		console.log('>>>> SLACK_CLIENT_ID:', slackClientID, 'SLACK_CLIENT_SECRET', slackClientSecret);
 
-		if (!slackClientID || !slackClientSecret)
-			return Response.redirect(`${event.url.origin}/setup`, 303);
+		if (!slackClientID || !slackClientSecret) {
+			console.log('REDIRECT', `http://${event.url.host}/setup`);
+			return Response.redirect(`http://${event.url.host}/setup`, 303);
+		}
 	}
 
 	return resolve(event);

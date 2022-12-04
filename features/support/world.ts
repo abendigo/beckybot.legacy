@@ -60,12 +60,12 @@ Before(async function (this: BeckysWorld) {
   if (this.promise) await this.promise;
 
   const container = createContainer({
-    env: createEnvMock(),
+    env: createEnvMock,
 
-    date: createDateMock(),
-    db: createDBMock(),
-    pubsub: createPubSubMock(),
-    slack: createSlackMock(),
+    date: createDateMock,
+    db: createDBMock,
+    pubsub: createPubSubMock,
+    slack: createSlackMock,
   });
 
   // if (this.parameters.dbSession == )

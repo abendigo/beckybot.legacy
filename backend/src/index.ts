@@ -9,10 +9,10 @@ import { createSlackHandler } from "@beckybot/lib/slack";
 
 // Inject Dependencies
 createContainer({
-  date: createDateHandler(),
-  db: createDataHandler(process.env.DB_HOST),
-  pubsub: createPubSubHandler(process.env.REDIS_HOST),
-  slack: createSlackHandler(),
+  date: createDateHandler,
+  db: () => createDataHandler(process.env.DB_HOST),
+  pubsub: () => createPubSubHandler(process.env.REDIS_HOST),
+  slack: createSlackHandler,
 });
 
 // Start the server
